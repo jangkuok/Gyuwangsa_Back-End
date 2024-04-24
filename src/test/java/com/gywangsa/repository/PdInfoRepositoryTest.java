@@ -6,42 +6,66 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @SpringBootTest
 @Log4j2
 public class PdInfoRepositoryTest {
 
+
     @Autowired
-    private GyuPdInfoRepository gyuPdInfoRepository;
+    private PdInfoRepository pdInfoRepository;
 
     @Test
     public void test1(){
-        Assertions.assertNotNull(gyuPdInfoRepository);
-        log.info(gyuPdInfoRepository.getClass().getName());
+        Assertions.assertNotNull(pdInfoRepository);
+        log.info(pdInfoRepository.getClass().getName());
     }
     @Test
     public void testInsert(){
-        PdInfo pdInfo = PdInfo.builder()
-                .category_no(1)
-                .item_no(1)
-                .brand_no(1)
-                .pd_no(1)
-                .start_date(LocalDate.now())
-                .pd_name("가성비 티셔츠")
-                .end_date(LocalDate.now())
-                .buy_amt(12000)
-                .like_cnt(3)
-                .pd_image("이미지")
-                .sex_cd("남")
-                .note("")
-                .build();
-        PdInfo result = gyuPdInfoRepository.save(pdInfo);
 
-        log.info(result);
+        for(int i = 1; i< 20; i++){
+            PdInfo pdInfo = PdInfo.builder()
+                    .categoryNo(1 + i)
+                    .itemNo(1 + i)
+                    .brandNo(1 + i)
+                    .pdNo(1 + i)
+                    .startDate(LocalDate.now())
+                    .pdName("가성비 티셔츠" + i)
+                    .endDate(LocalDate.now())
+                    .buyAmt(12000)
+                    .likeCnt(3)
+                    .pdImage("이미지")
+                    .sexCd("남")
+                    .note("")
+                    .build();
+            PdInfo result = pdInfoRepository.save(pdInfo);
 
+            log.info(result);
+        }
+
+
+
+    }
+
+    @Test
+    public void testPaging(){
+
+        Pageable pageable = PageRequest.of(0,10, Sort.by("pdNo").descending());
+        Page<PdInfo> list = pdInfoRepository.findAll(pageable);
+        log.info(list.getTotalElements());
+        log.info(list.getContent());
+    }
+
+    @Test
+    public void testSearch(){
+
+        pdInfoRepository.search();
     }
 
 }
