@@ -6,8 +6,6 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
 public class PdInfoDTO {
 
     private long categoryNo; //카테고리 번호

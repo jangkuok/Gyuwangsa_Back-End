@@ -2,14 +2,14 @@ package com.gywangsa.paging;
 
 import com.gywangsa.domain.PdInfo;
 import com.gywangsa.domain.QPdInfo;
+import com.gywangsa.dto.PageRequestDTO;
 import com.querydsl.jpa.JPQLOps;
 import com.querydsl.jpa.JPQLQuery;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+
+import java.util.List;
 
 @Log4j2
 public class PdInfoPagingImpl extends QuerydslRepositorySupport implements PdInfoPaging {
@@ -19,9 +19,9 @@ public class PdInfoPagingImpl extends QuerydslRepositorySupport implements PdInf
     }
 
     @Override
-    public Page<PdInfo> search() {
+    public Page<PdInfo> selectListByPdInfo(PageRequestDTO pageRequestDTO){
 
-        log.info("PdInfoPaging..................");
+        log.info("selectListByPdInfo..................");
 
         //객체 생성
         QPdInfo pdInfo = QPdInfo.pdInfo;
@@ -30,15 +30,19 @@ public class PdInfoPagingImpl extends QuerydslRepositorySupport implements PdInf
         JPQLQuery<PdInfo> query = from(pdInfo);
 
         //where 절
-        query.where(pdInfo.pdName.contains("2"));
+        //query.where(pdInfo.pdName.contains("2"));
 
         //페이징 처리
-        Pageable pageable = PageRequest.of(1,10, Sort.by("pdNo").descending());
+        Pageable pageable = PageRequest.of(
+                pageRequestDTO.getPage() -1,
+                pageRequestDTO.getSize(),
+                Sort.by("pdNo").descending());
+
         this.getQuerydsl().applyPagination(pageable, query);
 
-        query.fetch();//목록 데이터 가져오기
-        query.fetchCount(); // 카운트
+        List<PdInfo> pdInfoList = query.fetch();//목록 데이터 가져오기
+        long total = query.fetchCount(); // 카운트
 
-        return null;
+        return new PageImpl<>(pdInfoList, pageable, total);
     }
 }

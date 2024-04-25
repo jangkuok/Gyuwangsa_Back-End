@@ -61,11 +61,12 @@ public class PdInfoRepositoryTest {
         log.info(list.getTotalElements());
         log.info(list.getContent());
     }
-
+/*
     @Test
     public void testSearch(){
 
         pdInfoRepository.search();
     }
+*/
 
 }

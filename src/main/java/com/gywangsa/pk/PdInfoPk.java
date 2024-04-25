@@ -6,8 +6,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-@Getter
-@Setter
 @ToString
 @Data
 public class PdInfoPk implements Serializable {

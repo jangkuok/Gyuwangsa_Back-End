@@ -1,5 +1,7 @@
 package com.gywangsa.service;
 import com.gywangsa.domain.PdInfo;
+import com.gywangsa.dto.PageRequestDTO;
+import com.gywangsa.dto.PageResponseDTO;
 import com.gywangsa.dto.PdInfoDTO;
 import jakarta.transaction.Transactional;
 
@@ -7,8 +9,24 @@ import java.time.LocalDate;
 
 @Transactional
 public interface PdInfoService {
-    PdInfoDTO getPdInfo(Long categoryNo, Long itemNo, Long pdNo, Long brandNo, LocalDate startDate);
 
+    //상풍 등록
+    Long insertPdInfo(PdInfoDTO dto);
+
+    //상품 수정
+    void modifyPdInfo(PdInfoDTO dto);
+
+    //상품 삭제
+    void removePdInfoByPdNo(Long categoryNo, Long itemNo, Long pdNo, Long brandNo, LocalDate startDate);
+
+    //상품 리스트 조회
+    PageResponseDTO<PdInfoDTO> selectListByPdInfo(PageRequestDTO pageRequestDTO);
+
+    //특정 상품 조회
+    PdInfoDTO selectPdInfoByPdNo(Long categoryNo, Long itemNo, Long pdNo, Long brandNo, LocalDate startDate);
+
+
+    //Entity -> DTO
     default PdInfoDTO entityPdInfo(PdInfo pdInfo){
         PdInfoDTO pdInfoDTO = PdInfoDTO.builder()
                 .categoryNo(pdInfo.getCategoryNo())
@@ -28,6 +46,7 @@ public interface PdInfoService {
         return pdInfoDTO;
     }
 
+    //DTO -> Entity
     default PdInfo dtoPdInfo(PdInfoDTO pdInfoDTO){
         PdInfo pdInfo = PdInfo.builder()
                 .categoryNo(pdInfoDTO.getCategoryNo())
