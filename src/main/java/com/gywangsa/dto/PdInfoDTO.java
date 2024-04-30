@@ -1,6 +1,7 @@
 package com.gywangsa.dto;
 import lombok.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -12,9 +13,9 @@ public class PdInfoDTO {
     private long itemNo; //중분류 번호
     private long pdNo; //상품 번호
     private long brandNo; //브랜드 번호
-    private LocalDate startDate; //유효시작일
+    private LocalDateTime startDate; //유효시작일
     private String pdName; //상품이름
-    private LocalDate endDate; //유효종료일
+    private LocalDateTime endDate; //유효종료일
     private int buyAmt; //가격
     private int likeCnt; //좋아요 갯수
     private String pdImage; //상품 이미지

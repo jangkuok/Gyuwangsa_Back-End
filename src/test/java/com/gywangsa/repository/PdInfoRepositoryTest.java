@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @SpringBootTest
 @Log4j2
@@ -35,9 +36,9 @@ public class PdInfoRepositoryTest {
                     .itemNo(1 + i)
                     .brandNo(1 + i)
                     .pdNo(1 + i)
-                    .startDate(LocalDate.now())
+                    .startDate(LocalDateTime.now())
                     .pdName("가성비 티셔츠" + i)
-                    .endDate(LocalDate.now())
+                    .endDate(LocalDateTime.now())
                     .buyAmt(12000)
                     .likeCnt(3)
                     .pdImage("이미지")

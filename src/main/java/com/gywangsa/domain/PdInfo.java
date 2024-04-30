@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @ToString
@@ -16,6 +17,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Table(name = "GYU_PD_INFO")
 @IdClass(PdInfoPk.class)
+@SequenceGenerator(
+        name = "gyu_pd_info_pdNo_seq_gen",
+        sequenceName = "gyu_pd_info_pdNo_seq",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class PdInfo {
     @Id
     @Column(name = "category_no")
@@ -27,23 +34,26 @@ public class PdInfo {
 
     @Id
     @Column(name = "pd_no")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "gyu_pd_info_pdNo_seq_gen"
+    )
     private long pdNo; //상품 번호
 
     @Id
     @Column(name = "brand_no")
     private long brandNo; //브랜드 번호
 
-    @Id
     @Column(name = "start_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDate startDate; //유효시작일
+    private LocalDateTime startDate; //유효시작일
 
     @Column(name = "pd_name", length = 300)
     private String pdName; //상품이름
 
     @Column(name = "end_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDate endDate; //유효종료일
+    private LocalDateTime endDate; //유효종료일
 
     @Column(name = "buy_amt")
     private int buyAmt; //가격

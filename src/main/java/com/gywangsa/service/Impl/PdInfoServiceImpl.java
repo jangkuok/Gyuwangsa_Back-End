@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,7 +40,7 @@ public class PdInfoServiceImpl implements PdInfoService {
 
     //상품 수정
     @Override
-    public void modifyPdInfo(PdInfoDTO dto) {
+    public void modifyPdInfoByPdNo(PdInfoDTO dto) {
 
         PdInfoPk pdInfoPk = new PdInfoPk();
 
@@ -47,7 +48,6 @@ public class PdInfoServiceImpl implements PdInfoService {
         pdInfoPk.setItemNo(dto.getItemNo());
         pdInfoPk.setPdNo(dto.getPdNo());
         pdInfoPk.setBrandNo(dto.getBrandNo());
-        pdInfoPk.setStartDate(dto.getStartDate());
 
         Optional<PdInfo> result = pdInfoRepository.findById(pdInfoPk);
 
@@ -55,7 +55,9 @@ public class PdInfoServiceImpl implements PdInfoService {
 
         pdInfo.setPdName(dto.getPdName());
         pdInfo.setBuyAmt(dto.getBuyAmt());
+        pdInfo.setLikeCnt(dto.getLikeCnt());
         pdInfo.setPdImage(dto.getPdImage());
+        pdInfo.setSexCd(dto.getSexCd());
         pdInfo.setNote(dto.getNote());
 
         pdInfoRepository.save(pdInfo);
@@ -63,7 +65,7 @@ public class PdInfoServiceImpl implements PdInfoService {
 
     //상품 삭제
     @Override
-    public void removePdInfoByPdNo(Long categoryNo, Long itemNo, Long pdNo, Long brandNo, LocalDate startDate) {
+    public void removePdInfoByPdNo(Long brandNo, Long categoryNo, Long itemNo, Long pdNo) {
 
         PdInfoPk pdInfoPk = new PdInfoPk();
 
@@ -71,11 +73,11 @@ public class PdInfoServiceImpl implements PdInfoService {
         pdInfoPk.setItemNo(itemNo);
         pdInfoPk.setPdNo(pdNo);
         pdInfoPk.setBrandNo(brandNo);
-        pdInfoPk.setStartDate(startDate);
 
         pdInfoRepository.deleteById(pdInfoPk);
     }
 
+    //상품 리스트 조회
     @Override
     public PageResponseDTO<PdInfoDTO> selectListByPdInfo(PageRequestDTO pageRequestDTO) {
         //JPA
@@ -99,7 +101,7 @@ public class PdInfoServiceImpl implements PdInfoService {
 
     //특정 상품 조회
     @Override
-    public PdInfoDTO selectPdInfoByPdNo(Long categoryNo, Long itemNo, Long pdNo, Long brandNo, LocalDate startDate) {
+    public PdInfoDTO selectPdInfoByPdNo(Long brandNo, Long categoryNo, Long itemNo, Long pdNo) {
 
         PdInfoPk pdInfoPk = new PdInfoPk();
 
@@ -107,7 +109,6 @@ public class PdInfoServiceImpl implements PdInfoService {
         pdInfoPk.setItemNo(itemNo);
         pdInfoPk.setPdNo(pdNo);
         pdInfoPk.setBrandNo(brandNo);
-        pdInfoPk.setStartDate(startDate);
 
         Optional<PdInfo> result = pdInfoRepository.findById(pdInfoPk);
         PdInfo pdInfo = result.orElseThrow();

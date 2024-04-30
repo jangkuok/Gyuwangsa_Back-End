@@ -6,6 +6,7 @@ import com.gywangsa.dto.PdInfoDTO;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Transactional
 public interface PdInfoService {
@@ -14,17 +15,16 @@ public interface PdInfoService {
     Long insertPdInfo(PdInfoDTO dto);
 
     //상품 수정
-    void modifyPdInfo(PdInfoDTO dto);
+    void modifyPdInfoByPdNo(PdInfoDTO dto);
 
     //상품 삭제
-    void removePdInfoByPdNo(Long categoryNo, Long itemNo, Long pdNo, Long brandNo, LocalDate startDate);
+    void removePdInfoByPdNo(Long brandNo, Long categoryNo, Long itemNo, Long pdNo);
 
     //상품 리스트 조회
     PageResponseDTO<PdInfoDTO> selectListByPdInfo(PageRequestDTO pageRequestDTO);
 
     //특정 상품 조회
-    PdInfoDTO selectPdInfoByPdNo(Long categoryNo, Long itemNo, Long pdNo, Long brandNo, LocalDate startDate);
-
+    PdInfoDTO selectPdInfoByPdNo(Long brandNo, Long categoryNo, Long itemNo, Long pdNo);
 
     //Entity -> DTO
     default PdInfoDTO entityPdInfo(PdInfo pdInfo){

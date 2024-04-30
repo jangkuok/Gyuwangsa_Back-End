@@ -1,7 +1,7 @@
 package com.gywangsa.pk;
 import lombok.*;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,6 +13,4 @@ public class PdInfoPk implements Serializable {
     private long itemNo; //중분류 번호
     private long pdNo; //상품 번호
     private long brandNo; //브랜드 번호
-    private LocalDate startDate; //유효시작일
-
 }

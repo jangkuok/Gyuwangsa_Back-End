@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @SpringBootTest
 @Log4j2
@@ -22,9 +23,9 @@ public class PdInfoServiceTest {
     @Test
     public void insertPdInfo(){
         PdInfoDTO dto = PdInfoDTO.builder()
-                .startDate(LocalDate.now())
+                .startDate(LocalDateTime.now())
                 .pdName("데님 팬츠")
-                .endDate(LocalDate.now())
+                .endDate(LocalDateTime.now())
                 .buyAmt(45000)
                 .likeCnt(6)
                 .pdImage("이미지")
@@ -38,7 +39,7 @@ public class PdInfoServiceTest {
     @Test
     public void selectPdInfoByPdNo(){
         Long no = 2L;
-        log.info(pdInfoService.selectPdInfoByPdNo(no,no,no,no,LocalDate.parse("2024-04-24")));
+        log.info(pdInfoService.selectPdInfoByPdNo(no,no,no,no));
     }
 
     @Test
