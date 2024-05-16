@@ -24,7 +24,8 @@ public interface PdInfoService {
     PageResponseDTO<PdInfoDTO> selectListByPdInfo(PageRequestDTO pageRequestDTO);
 
     //특정 상품 조회
-    PdInfoDTO selectPdInfoByPdNo(Long brandNo, Long categoryNo, Long itemNo, Long pdNo);
+    //PdInfoDTO selectPdInfoByPdNo(Long brandNo, Long categoryNo, Long itemNo, Long pdNo);
+    PdInfoDTO selectPdInfoByPdNo(Long pdNo);
 
     //Entity -> DTO
     default PdInfoDTO entityPdInfo(PdInfo pdInfo){

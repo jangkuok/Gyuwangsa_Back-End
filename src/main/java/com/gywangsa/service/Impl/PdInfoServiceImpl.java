@@ -100,7 +100,7 @@ public class PdInfoServiceImpl implements PdInfoService {
     }
 
     //특정 상품 조회
-    @Override
+/*    @Override
     public PdInfoDTO selectPdInfoByPdNo(Long brandNo, Long categoryNo, Long itemNo, Long pdNo) {
 
         PdInfoPk pdInfoPk = new PdInfoPk();
@@ -112,6 +112,13 @@ public class PdInfoServiceImpl implements PdInfoService {
 
         Optional<PdInfo> result = pdInfoRepository.findById(pdInfoPk);
         PdInfo pdInfo = result.orElseThrow();
+
+        return entityPdInfo(pdInfo);
+    }*/
+    @Override
+    public PdInfoDTO selectPdInfoByPdNo(Long pdNo) {
+
+        PdInfo pdInfo = pdInfoRepository.selectPdInfoByPdNo(pdNo);
 
         return entityPdInfo(pdInfo);
     }

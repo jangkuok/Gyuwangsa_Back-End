@@ -56,11 +56,16 @@ public class PdInfoRepositoryTest {
 
     @Test
     public void testPaging(){
-
         Pageable pageable = PageRequest.of(0,10, Sort.by("pdNo").descending());
         Page<PdInfo> list = pdInfoRepository.findAll(pageable);
         log.info(list.getTotalElements());
         log.info(list.getContent());
+    }
+
+    @Test
+    public void selectPdInfoByProduct(){
+        Long pdNo = 2L;
+        log.info(pdInfoRepository.selectPdInfoByPdNo(pdNo));
     }
 /*
     @Test

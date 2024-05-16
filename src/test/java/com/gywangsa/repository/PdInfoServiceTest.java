@@ -22,24 +22,25 @@ public class PdInfoServiceTest {
 
     @Test
     public void insertPdInfo(){
-        PdInfoDTO dto = PdInfoDTO.builder()
-                .startDate(LocalDateTime.now())
-                .pdName("데님 팬츠")
-                .endDate(LocalDateTime.now())
-                .buyAmt(45000)
-                .likeCnt(6)
-                .pdImage("이미지")
-                .sexCd("여")
-                .note("")
-                .build();
-
-        log.info(pdInfoService.insertPdInfo(dto));
+        for(int i =1; i<=1;i++){
+            PdInfoDTO dto = PdInfoDTO.builder()
+                    .startDate(LocalDateTime.now())
+                    .pdName("티셔츠")
+                    .endDate(LocalDateTime.now())
+                    .buyAmt(2500)
+                    .likeCnt(6)
+                    .pdImage("이미지")
+                    .sexCd("남")
+                    .note("")
+                    .build();
+            log.info(pdInfoService.insertPdInfo(dto));
+        }
     }
 
     @Test
     public void selectPdInfoByPdNo(){
         Long no = 2L;
-        log.info(pdInfoService.selectPdInfoByPdNo(no,no,no,no));
+        log.info(pdInfoService.selectPdInfoByPdNo(no));
     }
 
     @Test

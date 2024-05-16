@@ -9,12 +9,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@ToString
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "")
 @Table(name = "GYU_PD_INFO")
 @IdClass(PdInfoPk.class)
 @SequenceGenerator(

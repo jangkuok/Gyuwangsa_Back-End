@@ -3,7 +3,6 @@ package com.gywangsa.paging;
 import com.gywangsa.domain.PdInfo;
 import com.gywangsa.domain.QPdInfo;
 import com.gywangsa.dto.PageRequestDTO;
-import com.querydsl.jpa.JPQLOps;
 import com.querydsl.jpa.JPQLQuery;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.*;
