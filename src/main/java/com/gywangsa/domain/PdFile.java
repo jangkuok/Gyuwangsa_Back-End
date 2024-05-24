@@ -1,20 +1,27 @@
 package com.gywangsa.domain;
 
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Embeddable
 @Getter
-@Setter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class PdFile {
-    private long fileId;
-    private String filePath;
-    private String fileNm;
-    private String fileType;
-    private int ord;
 
+    @Column(name = "file_path")
+    private String filePath;
+
+    @Column(name = "file_nm")
+    private String fileNm;
+
+    @Column(name = "file_ord")
+    private int fileOrd;
+
+    public void changeFileOrd(int fileOrd) {
+        this.fileOrd = fileOrd;
+    }
 }
 

@@ -5,5 +5,5 @@ import com.gywangsa.dto.PageRequestDTO;
 import org.springframework.data.domain.Page;
 
 public interface PdInfoPaging {
-    Page<PdInfo> selectListByPdInfo(PageRequestDTO pageRequestDTO);
+    Page<PdInfo> selectListByPdInfo(PageRequestDTO pageRequestDTO,Long categoryNo, Long itemNo);
 }

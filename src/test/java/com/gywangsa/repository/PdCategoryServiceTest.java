@@ -20,7 +20,7 @@ import java.util.List;
 public class PdCategoryServiceTest {
 
     @Autowired
-    PdCategoryService categoryService;
+    private PdCategoryService categoryService;
 
     @Transactional
     @Test

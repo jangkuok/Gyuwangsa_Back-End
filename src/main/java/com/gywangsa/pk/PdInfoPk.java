@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 @ToString
 @Data
 public class PdInfoPk implements Serializable {
-    private long categoryNo; //카테고리 번호
-    private long itemNo; //중분류 번호
-    private long pdNo; //상품 번호
-    private long brandNo; //브랜드 번호
+    private Long categoryNo; //카테고리 번호
+    private Long itemNo; //중분류 번호
+    private Long pdNo; //상품 번호
+    private Long brandNo; //브랜드 번호
 }

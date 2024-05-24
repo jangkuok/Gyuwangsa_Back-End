@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @Log4j2
@@ -25,95 +27,132 @@ public class PdInfoController {
     private final PdInfoService pdInfoService;
     private final CustomFileUtil customFileUtil;
 
-//    @GetMapping("/{brandNo}/{categoryNo}/{itemNo}/{pdNo}")
-//    public PdInfoDTO selectPdInfoByPdNo(@PathVariable("categoryNo") Long categoryNo,
-//                                     @PathVariable("itemNo") Long itemNo,
-//                                     @PathVariable("brandNo") Long brandNo,
-//                                     @PathVariable("pdNo") Long pdNo){
-//        log.info("==============>selectPdInfoByPdNo");
-//        return pdInfoService.selectPdInfoByPdNo(brandNo,categoryNo,itemNo,pdNo);
-//    }
 
-    @GetMapping("/{pdNo}")
-    public PdInfoDTO selectPdInfoByPdNo(@PathVariable("pdNo") Long pdNo){
+    //상품 조회
+     @GetMapping("/{pdNo}")
+     public PdInfoDTO selectPdInfoByPdNo(@PathVariable("pdNo") Long pdNo){
         log.info("==============>selectPdInfoByPdNo");
         return pdInfoService.selectPdInfoByPdNo(pdNo);
-    }
+     }
 
-
-    @GetMapping("/productList")
-    public PageResponseDTO<PdInfoDTO> selectListByPdInfo(PageRequestDTO pageRequestDTO){
+     //목록 조회
+    @GetMapping("/item/{categoryNo}/{itemNo}")
+    public PageResponseDTO<PdInfoDTO> selectListByPdInfo(PageRequestDTO pageRequestDTO,
+                                                         @PathVariable("categoryNo") Long categoryNo,
+                                                         @PathVariable("itemNo") Long itemNo){
         log.info("==============>selectListByPdInfo");
-        return pdInfoService.selectListByPdInfo(pageRequestDTO);
+        return pdInfoService.selectListByPdInfo(pageRequestDTO,categoryNo,itemNo);
     }
 
+
+    //등록
     @PostMapping("/insertPdInfo")
-    public Map<String, Long> insertPdInfo(@RequestBody PdInfoDTO dto){
-        log.info("==============>insertPdInfo" + dto);
+    public Map<String, Long> insertPdInfo(PdInfoDTO dto){
+
+        List<MultipartFile> files = dto.getFiles();
+        List<String> fileNames = customFileUtil.saveFile(files);
+        dto.setImageList(fileNames);
 
         LocalDateTime now = LocalDateTime.now();
         dto.setStartDate(now);
         dto.setEndDate(now.plusMonths(12));
 
+        log.info("==============>insertPdInfo" + dto);
+
         Long pdNo = pdInfoService.insertPdInfo(dto);
+
         return Map.of("pdNo",pdNo);
     }
 
-    @PostMapping("/test/insertPdInfo")
-    public Map<String, String> testInsertPdInfo(PdInfoDTO dto){
-        log.info("==============>insertPdInfo" + dto);
+//    //등록
+//    @PostMapping("/test/insertPdInfo")
+//    public Map<String, String> testInsertPdInfo(PdInfoDTO dto){
+//        log.info("==============>insertPdInfo" + dto);
+//
+//        List<MultipartFile> files = dto.getFiles();
+//
+//        List<String> uploadFileName = customFileUtil.saveFile(files);
+//
+//        dto.setImageList(uploadFileName);
+//
+//        LocalDateTime now = LocalDateTime.now();
+//        dto.setStartDate(now);
+//        dto.setEndDate(now.plusMonths(12));
+//
+//        log.info(uploadFileName);
+//
+//        //Long pdNo = pdInfoService.insertPdInfo(dto);
+//        return Map.of("RESULT","SUCCESS");
+//    }
 
-        List<MultipartFile> files = dto.getFiles();
+//    //수정
+//    @PutMapping("/modify/{brandNo}/{categoryNo}/{itemNo}/{pdNo}")
+//    public Map<String, String> modifyPdInfoByPdNo(@PathVariable("categoryNo") Long categoryNo,
+//                                            @PathVariable("itemNo") Long itemNo,
+//                                            @PathVariable("brandNo") Long brandNo,
+//                                            @PathVariable("pdNo") Long pdNo,
+//                                            @RequestBody PdInfoDTO dto){
+//
+//        log.info("==============>modifyPdInfo" + dto);
+//
+//        dto.setCategoryNo(categoryNo);
+//        dto.setItemNo(itemNo);
+//        dto.setBrandNo(brandNo);
+//        dto.setPdNo(pdNo);
+//
+//        PdInfoPk pk = new PdInfoPk();
+//
+//        pk.setCategoryNo(categoryNo);
+//        pk.setItemNo(itemNo);
+//        pk.setBrandNo(brandNo);
+//        pk.setPdNo(pdNo);
+//
+//        pdInfoService.modifyPdInfoByPdNo(dto);
+//        return Map.of("RESULT","SUCCESS");
+//    }
 
-        List<String> uploadFileName = customFileUtil.saveFile(files);
 
-        dto.setImageList(uploadFileName);
-
-        LocalDateTime now = LocalDateTime.now();
-        dto.setStartDate(now);
-        dto.setEndDate(now.plusMonths(12));
-
-        log.info(uploadFileName);
-
-        //Long pdNo = pdInfoService.insertPdInfo(dto);
-        return Map.of("RESULT","SUCCESS");
-    }
-
-    @PutMapping("/modify/{brandNo}/{categoryNo}/{itemNo}/{pdNo}")
-    public Map<String, String> modifyPdInfoByPdNo(@PathVariable("categoryNo") Long categoryNo,
-                                            @PathVariable("itemNo") Long itemNo,
-                                            @PathVariable("brandNo") Long brandNo,
-                                            @PathVariable("pdNo") Long pdNo,
-                                            @RequestBody PdInfoDTO dto){
-
-        log.info("==============>modifyPdInfo" + dto);
-
-        dto.setCategoryNo(categoryNo);
-        dto.setItemNo(itemNo);
-        dto.setBrandNo(brandNo);
+    //수정
+    @PutMapping("/modify/{pdNo}")
+    public Map<String, String> modifyPdInfoByPdNo(@PathVariable("pdNo") Long pdNo,
+                                                  PdInfoDTO dto){
         dto.setPdNo(pdNo);
 
-        PdInfoPk pk = new PdInfoPk();
+        //수정 전 파일
+        PdInfoDTO oldDto = pdInfoService.selectPdInfoByPdNo(pdNo);
 
-        pk.setCategoryNo(categoryNo);
-        pk.setItemNo(itemNo);
-        pk.setBrandNo(brandNo);
-        pk.setPdNo(pdNo);
+        //파일 없로드
+        List<MultipartFile> files = dto.getFiles();
+        List<String> uploadFileNames = customFileUtil.saveFile(files);
+
+        //수정 안 한 파일
+        List<String> noModifyFileNames = dto.getImageList();
+
+        //업로드 된 파일이 있으면
+        if(uploadFileNames != null && !uploadFileNames.isEmpty()){
+            noModifyFileNames.addAll(uploadFileNames);
+        }
 
         pdInfoService.modifyPdInfoByPdNo(dto);
+
+        List<String> oldFileNames = oldDto.getImageList();
+        if(oldFileNames != null && oldFileNames.size() > 0){
+            List<String> removeFileNames = oldFileNames.stream().filter(m -> noModifyFileNames.indexOf(m) == -1).collect(Collectors.toList());
+            customFileUtil.deleteFiles(removeFileNames);
+        }
+
         return Map.of("RESULT","SUCCESS");
     }
 
-    @DeleteMapping("/remove/{brandNo}/{categoryNo}/{itemNo}/{pdNo}")
-    public Map<String, String> removePdInfoByPdNo(@PathVariable("categoryNo") Long categoryNo,
-                                            @PathVariable("itemNo") Long itemNo,
-                                            @PathVariable("brandNo") Long brandNo,
-                                            @PathVariable("pdNo") Long pdNo,
-                                            @RequestBody PdInfoDTO dto){
+    //삭제
+    @DeleteMapping("/remove/{pdNo}")
+    public Map<String, String> removePdInfoByPdNo(@PathVariable("pdNo")Long pdNo){
 
-        log.info("==============>removePdInfoByPdNo" + dto);
+        List<String> fileNames = pdInfoService.selectPdInfoByPdNo(pdNo).getImageList();
+        pdInfoService.removePdInfoByPdNo(pdNo);
 
-        pdInfoService.removePdInfoByPdNo(brandNo,categoryNo,itemNo,pdNo);
+        customFileUtil.deleteFiles(fileNames);
+
         return Map.of("RESULT","SUCCESS");
     }
 
