@@ -153,6 +153,7 @@ public class PdInfoServiceImpl implements PdInfoService {
 
         PdInfo pdInfo = result.orElseThrow();
 
+        log.info(pdInfo);
         return entityPdInfo(pdInfo);
     }
     

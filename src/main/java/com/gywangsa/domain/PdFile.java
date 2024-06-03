@@ -10,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PdFile {
-
     @Column(name = "file_path")
     private String filePath;
 

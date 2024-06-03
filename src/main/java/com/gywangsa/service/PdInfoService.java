@@ -1,14 +1,17 @@
 package com.gywangsa.service;
 import com.gywangsa.domain.PdFile;
 import com.gywangsa.domain.PdInfo;
+import com.gywangsa.domain.PdSize;
 import com.gywangsa.dto.PageRequestDTO;
 import com.gywangsa.dto.PageResponseDTO;
 import com.gywangsa.dto.PdInfoDTO;
+import com.gywangsa.dto.PdSizeDTO;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 public interface PdInfoService {
@@ -46,6 +49,7 @@ public interface PdInfoService {
                 .note(pdInfo.getNote())
                 .build();
 
+        //이미지
         List<PdFile> imageList = pdInfo.getFileList();
 
         if(imageList == null || imageList.size() == 0){
@@ -54,6 +58,26 @@ public interface PdInfoService {
 
         List<String> fileList = imageList.stream().map(m -> m.getFileNm()).toList();
         pdInfoDTO.setImageList(fileList);
+
+        //사이즈
+        List<PdSize> pdSizeList = pdInfo.getSizeList();
+
+        List<PdSizeDTO> sizeList = pdSizeList.stream().map(m -> PdSizeDTO.builder()
+                .sizeType(m.getSizeType())
+                .pdType(m.getPdType())
+                .attr1(m.getAttr1())
+                .attr2(m.getAttr2())
+                .attr3(m.getAttr3())
+                .attr4(m.getAttr4())
+                .attr5(m.getAttr5())
+                .attr6(m.getAttr6())
+                .attr7(m.getAttr7())
+                .color(m.getColor())
+                .colorCode(m.getColorCode())
+                .sizeCnt(m.getSizeCnt())
+                .build()).collect(Collectors.toList());
+
+        pdInfoDTO.setSizeList(sizeList);
 
         return pdInfoDTO;
     }
@@ -75,6 +99,7 @@ public interface PdInfoService {
                 .note(pdInfoDTO.getNote())
                 .build();
 
+        //이미지
         List<String> imageList = pdInfoDTO.getImageList();
 
         if(imageList == null || imageList.size() == 0){
@@ -84,6 +109,26 @@ public interface PdInfoService {
         imageList.forEach(fileName -> {
             pdInfo.addFileString(fileName);
         });
+
+        //사이즈
+        List<PdSizeDTO> pdSizeDTOList = pdInfoDTO.getSizeList();
+
+        List<PdSize> pdSizeList = pdSizeDTOList.stream().map(m -> PdSize.builder()
+                .sizeType(m.getSizeType())
+                .pdType(m.getPdType())
+                .attr1(m.getAttr1())
+                .attr2(m.getAttr2())
+                .attr3(m.getAttr3())
+                .attr4(m.getAttr4())
+                .attr5(m.getAttr5())
+                .attr6(m.getAttr6())
+                .attr7(m.getAttr7())
+                .color(m.getColor())
+                .colorCode(m.getColorCode())
+                .sizeCnt(m.getSizeCnt())
+                .build()).collect(Collectors.toList());
+
+        pdInfo.changeSizeList(pdSizeList);
 
         return pdInfo;
     }

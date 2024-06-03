@@ -1,14 +1,18 @@
 package com.gywangsa.controller;
 
 import com.gywangsa.domain.PdInfo;
+import com.gywangsa.domain.PdSize;
 import com.gywangsa.dto.PageRequestDTO;
 import com.gywangsa.dto.PageResponseDTO;
 import com.gywangsa.dto.PdInfoDTO;
+import com.gywangsa.dto.PdSizeDTO;
 import com.gywangsa.pk.PdInfoPk;
 import com.gywangsa.service.PdInfoService;
 import com.gywangsa.util.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,12 +32,19 @@ public class PdInfoController {
     private final CustomFileUtil customFileUtil;
 
 
-    //상품 조회
+     //상품 조회
      @GetMapping("/{pdNo}")
      public PdInfoDTO selectPdInfoByPdNo(@PathVariable("pdNo") Long pdNo){
         log.info("==============>selectPdInfoByPdNo");
         return pdInfoService.selectPdInfoByPdNo(pdNo);
      }
+
+    @GetMapping("/view/{fileNm}")
+    public ResponseEntity<Resource> viewFile(@PathVariable("fileNm") String fileNm){
+        log.info("==============>viewFile");
+        return customFileUtil.selectByFile(fileNm);
+    }
+
 
      //목록 조회
     @GetMapping("/item/{categoryNo}/{itemNo}")
@@ -47,21 +58,35 @@ public class PdInfoController {
 
     //등록
     @PostMapping("/insertPdInfo")
-    public Map<String, Long> insertPdInfo(PdInfoDTO dto){
+    //public Map<String, Long> insertPdInfo(PdInfoDTO dto){
+//    public Map<String, Long> insertPdInfo(PdInfoDTO dto, @RequestPart(value = "size") List<String> sizeList,
+//                                          @RequestPart(value = "file",required = false) List<MultipartFile> files){
+        public Map<String, Long> insertPdInfo(@RequestPart(value = "pdInfo") PdInfoDTO pdInfoDTO,
+                                                             @RequestPart(value = "fileList",required = false)  List<MultipartFile> fileList){
 
-        List<MultipartFile> files = dto.getFiles();
-        List<String> fileNames = customFileUtil.saveFile(files);
-        dto.setImageList(fileNames);
+         log.info(pdInfoDTO.getPdName());
+         log.info(pdInfoDTO.getSizeList());
+         log.info(fileList);
+
+        //List<MultipartFile> files = dto.getFiles();
+        //List<String> fileNames = customFileUtil.saveFile(files);
+        //dto.setImageList(fileNames);
+
+        List<String> fileNames = customFileUtil.saveFile(fileList);
+        pdInfoDTO.setImageList(fileNames);
+
+        pdInfoDTO.setSizeList(pdInfoDTO.getSizeList());
 
         LocalDateTime now = LocalDateTime.now();
-        dto.setStartDate(now);
-        dto.setEndDate(now.plusMonths(12));
+        pdInfoDTO.setStartDate(now);
+        pdInfoDTO.setEndDate(now.plusMonths(12));
 
-        log.info("==============>insertPdInfo" + dto);
+        log.info("==============>insertPdInfo" + pdInfoDTO);
 
-        Long pdNo = pdInfoService.insertPdInfo(dto);
+        Long pdNo = pdInfoService.insertPdInfo(pdInfoDTO);
 
         return Map.of("pdNo",pdNo);
+
     }
 
 //    //등록

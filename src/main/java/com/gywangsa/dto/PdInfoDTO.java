@@ -1,4 +1,5 @@
 package com.gywangsa.dto;
+import com.gywangsa.domain.PdSize;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -47,6 +48,7 @@ public class PdInfoDTO {
     private  List<MultipartFile> files = new ArrayList<>();
     @Builder.Default
     private List<String> imageList = new ArrayList<>();
-
+    @Builder.Default
+    private List<PdSizeDTO> sizeList = new ArrayList<>();
 
 }

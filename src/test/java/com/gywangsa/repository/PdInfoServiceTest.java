@@ -28,17 +28,17 @@ public class PdInfoServiceTest {
     public void insertPdInfo(){
         for(int i = 0; i<=20; i++){
         PdInfoDTO pdInfoDTO = PdInfoDTO.builder()
-                .categoryNo(2L)
-                .itemNo(2L)
-                .brandNo(1L)
-                .brandNm("인사일런스")
+                .categoryNo(3L)
+                .itemNo(3L)
+                .brandNo(2L)
+                .brandNm("엘무드")
                 .startDate(LocalDateTime.now())
-                .pdName("데님팬츠")
+                .pdName("블레이저")
                 .endDate(LocalDateTime.now())
                 .buyAmt(52000)
                 .likeCnt(3)
                 .sexCd("남")
-                .note("청바지 입니다.")
+                .note("블래이저 입니다.")
                 .delFlag(false)
                 .build();
 
@@ -50,9 +50,10 @@ public class PdInfoServiceTest {
         }
     }
 
+    @Transactional
     @Test
     public void selectPdInfoByPdNo(){
-        Long no = 2L;
+        Long no = 148L;
         log.info(pdInfoService.selectPdInfoByPdNo(no));
     }
 

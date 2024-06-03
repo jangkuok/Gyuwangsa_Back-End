@@ -1,6 +1,8 @@
 package com.gywangsa.repository;
 
+import com.gywangsa.domain.PdColor;
 import com.gywangsa.domain.PdInfo;
+import com.gywangsa.domain.PdSize;
 import com.gywangsa.dto.PageRequestDTO;
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
@@ -39,25 +41,101 @@ public class PdInfoRepositoryTest {
     @Test
     public void testInsert(){
 
-        for (int i = 0; i<= 10; i++){
+        for (int i = 0; i<= 22; i++){
             PdInfo pdInfo = PdInfo.builder()
-                    .categoryNo(1L)
-                    .itemNo(1L)
+                    .categoryNo(2L)
+                    .itemNo(2L)
                     .brandNo(2L)
                     .brandNm("엘무드")
                     .startDate(LocalDateTime.now())
-                    .pdName("가성비 티셔츠")
+                    .pdName("청바지")
                     .endDate(LocalDateTime.now())
-                    .buyAmt(12000)
-                    .likeCnt(3)
+                    .buyAmt(40000)
+                    .likeCnt(0)
                     .sexCd("남")
-                    .note("가성비 티셔츠입니다.")
+                    .note("청바지입니다.")
                     .delFlag(false)
                     .build();
 
-            pdInfo.addFileString(UUID.randomUUID()+"_"+"Image_1.jpg");
-            pdInfo.addFileString(UUID.randomUUID()+"_"+"Image_2.jpg");
+            //pdInfo.addFileString(UUID.randomUUID()+"_"+"Image_1.jpg");
+            //pdInfo.addFileString(UUID.randomUUID()+"_"+"Image_2.jpg");
+            pdInfo.addFileString("770bc904-b54a-4e86-8523-7c46b17c4399_test1.jpg");
+            pdInfo.addFileString("90353731-00bd-4849-b2ba-67892b9f1f28_test2.jpg");
+            pdInfo.addFileString("s_770bc904-b54a-4e86-8523-7c46b17c4399_test1.jpg");
+            pdInfo.addFileString("s_90353731-00bd-4849-b2ba-67892b9f1f28_test2.jpg");
 
+            for (int j = 0; j<= 1; j++){
+                PdSize size = new PdSize();
+                size.changeSizeType("S");
+                size.changePdType("하의");
+                size.changeAttr1("30");
+                size.changeAttr2("30");
+                size.changeAttr3("30");
+                size.changeAttr4("30");
+                size.changeAttr5("30");
+                size.changeAttr6("30");
+                size.changeColor("푸른색");
+                size.changeColorCode("#0067a3");
+                size.changeAttr7("");
+                size.changeSizeCnt(60);
+
+                pdInfo.addSize(size);
+
+            }
+
+            for (int j = 0; j<= 1; j++){
+                PdSize size = new PdSize();
+                size.changeSizeType("M");
+                size.changePdType("하의");
+                size.changeAttr1("30");
+                size.changeAttr2("30");
+                size.changeAttr3("30");
+                size.changeAttr4("30");
+                size.changeAttr5("30");
+                size.changeAttr6("30");
+                size.changeColor("푸른색");
+                size.changeColorCode("#0067a3");
+                size.changeAttr7("");
+                size.changeSizeCnt(60);
+
+                pdInfo.addSize(size);
+            }
+
+            for (int j = 0; j<= 1; j++){
+                PdSize size = new PdSize();
+                size.changeSizeType("L");
+                size.changePdType("하의");
+                size.changeAttr1("30");
+                size.changeAttr2("30");
+                size.changeAttr3("30");
+                size.changeAttr4("30");
+                size.changeAttr5("30");
+                size.changeAttr6("30");
+                size.changeColor("푸른색");
+                size.changeColorCode("#0067a3");
+                size.changeAttr7("");
+                size.changeSizeCnt(60);
+
+                pdInfo.addSize(size);
+            }
+
+            for (int j = 0; j<= 1; j++){
+                PdSize size = new PdSize();
+                size.changeSizeType("XL");
+                size.changePdType("하의");
+                size.changeAttr1("30");
+                size.changeAttr2("30");
+                size.changeAttr3("30");
+                size.changeAttr4("30");
+                size.changeAttr5("30");
+                size.changeAttr6("30");
+                size.changeColor("푸른색");
+                size.changeColorCode("#0067a3");
+                size.changeAttr7("");
+                size.changeSizeCnt(60);
+
+                pdInfo.addSize(size);
+            }
             PdInfo result = pdInfoRepository.save(pdInfo);
             log.info(result);
         }
@@ -80,15 +158,18 @@ public class PdInfoRepositoryTest {
         list.getContent().forEach(arr -> log.info(Arrays.toString(arr)));
 
     }
+
+    @Transactional
     @Test
     public void selectPdInfoByProduct(){
-        Long pdNo = 1L;
+        Long pdNo = 128L;
 
         Optional<PdInfo> result =pdInfoRepository.selectPdInfoByPdNo(pdNo);
 
         PdInfo pdInfo = result.orElseThrow();
         log.info(pdInfo);
         log.info(pdInfo.getFileList());
+        log.info(pdInfo.getSizeList());
     }
 
     @Commit

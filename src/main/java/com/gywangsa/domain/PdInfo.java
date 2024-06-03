@@ -3,6 +3,7 @@ package com.gywangsa.domain;
 import com.gywangsa.pk.PdInfoPk;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "fileList")
+@ToString(exclude = {"fileList", "sizeList"})
 @Table(name = "GYU_PD_INFO")
 @IdClass(PdInfoPk.class)
 @SequenceGenerator(
@@ -74,9 +75,16 @@ public class PdInfo {
     private boolean delFlag; //삭제 상태
 
     @ElementCollection
+    @OrderColumn(name = "id")
     @CollectionTable(name = "gyu_pd_file")
     @Builder.Default
-    private List<PdFile> fileList = new ArrayList<>();
+    private List<PdFile> fileList = new ArrayList<>(); //이미지 리스트
+
+    @ElementCollection
+    @OrderColumn(name = "id")
+    @CollectionTable(name = "gyu_pd_size")
+    @Builder.Default
+    private List<PdSize> sizeList = new ArrayList<>(); //사이즈 리스트
 
 
     public void changePdName(String pdName) {
@@ -120,5 +128,28 @@ public class PdInfo {
     //파일 삭제
     public void delFileList(){
         this.fileList.clear();
+    }
+
+    //사이즈 등록
+    public void addSize(PdSize pdSize){
+        PdSize size = PdSize.builder()
+                .sizeType(pdSize.getSizeType())
+                .pdType(pdSize.getPdType())
+                .attr1(pdSize.getAttr1())
+                .attr2(pdSize.getAttr2())
+                .attr3(pdSize.getAttr3())
+                .attr4(pdSize.getAttr4())
+                .attr5(pdSize.getAttr5())
+                .attr6(pdSize.getAttr6())
+                .attr7(pdSize.getAttr7())
+                .color(pdSize.getColor())
+                .colorCode(pdSize.getColorCode())
+                .sizeCnt(pdSize.getSizeCnt())
+                .build();
+        sizeList.add(size);
+    }
+
+    public void changeSizeList(List<PdSize> sizeList) {
+        this.sizeList = sizeList;
     }
 }

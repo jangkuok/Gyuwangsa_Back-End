@@ -17,7 +17,9 @@ import java.util.Optional;
 
 public interface PdInfoRepository extends JpaRepository<PdInfo, PdInfoPk>, PdInfoPaging {
 
-    @EntityGraph(attributePaths = "fileList")
+
+    //@EntityGraph(attributePaths = "fileList")
+    @EntityGraph(attributePaths = {"fileList","sizeList"})
     @Query("select p from PdInfo p where p.pdNo= :pdNo")
     Optional<PdInfo> selectPdInfoByPdNo(@Param("pdNo") Long pdNo);
 
