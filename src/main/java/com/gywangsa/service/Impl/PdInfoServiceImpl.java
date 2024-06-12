@@ -2,6 +2,7 @@ package com.gywangsa.service.Impl;
 
 import com.gywangsa.domain.PdFile;
 import com.gywangsa.domain.PdInfo;
+import com.gywangsa.domain.PdSize;
 import com.gywangsa.dto.PageRequestDTO;
 import com.gywangsa.dto.PageResponseDTO;
 import com.gywangsa.dto.PdInfoDTO;
@@ -61,6 +62,27 @@ public class PdInfoServiceImpl implements PdInfoService {
                 pdInfo.addFileString(fe);
             });
         }
+
+        //사이즈 처리
+        pdInfo.delSizeList();
+
+        List<PdSize> pdSizeList = pdInfoDTO.getSizeList().stream().map(m -> PdSize.builder()
+                .sizeType(m.getSizeType())
+                .pdType(m.getPdType())
+                .attr1(m.getAttr1())
+                .attr2(m.getAttr2())
+                .attr3(m.getAttr3())
+                .attr4(m.getAttr4())
+                .attr5(m.getAttr5())
+                .attr6(m.getAttr6())
+                .attr7(m.getAttr7())
+                .color(m.getColor())
+                .colorCode(m.getColorCode())
+                .sizeCnt(m.getSizeCnt())
+                .build()).collect(Collectors.toList());
+
+        pdInfo.changeSizeList(pdSizeList);
+
         //저장
         pdInfoRepository.save(pdInfo);
     }

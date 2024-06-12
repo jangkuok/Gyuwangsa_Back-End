@@ -58,19 +58,12 @@ public class PdInfoController {
 
     //등록
     @PostMapping("/insertPdInfo")
-    //public Map<String, Long> insertPdInfo(PdInfoDTO dto){
-//    public Map<String, Long> insertPdInfo(PdInfoDTO dto, @RequestPart(value = "size") List<String> sizeList,
-//                                          @RequestPart(value = "file",required = false) List<MultipartFile> files){
         public Map<String, Long> insertPdInfo(@RequestPart(value = "pdInfo") PdInfoDTO pdInfoDTO,
                                                              @RequestPart(value = "fileList",required = false)  List<MultipartFile> fileList){
 
          log.info(pdInfoDTO.getPdName());
          log.info(pdInfoDTO.getSizeList());
          log.info(fileList);
-
-        //List<MultipartFile> files = dto.getFiles();
-        //List<String> fileNames = customFileUtil.saveFile(files);
-        //dto.setImageList(fileNames);
 
         List<String> fileNames = customFileUtil.saveFile(fileList);
         pdInfoDTO.setImageList(fileNames);
@@ -139,15 +132,22 @@ public class PdInfoController {
 
     //수정
     @PutMapping("/modify/{pdNo}")
-    public Map<String, String> modifyPdInfoByPdNo(@PathVariable("pdNo") Long pdNo,
-                                                  PdInfoDTO dto){
-        dto.setPdNo(pdNo);
+    //@PutMapping("/modifyPdInfo")
+
+//    public Map<String, String> modifyPdInfoByPdNo(@PathVariable("pdNo") Long pdNo,
+//                                                  PdInfoDTO dto){
+        public Map<String, String> modifyPdInfoByPdNo(
+            @PathVariable("pdNo") Long pdNo,
+                @RequestPart(value = "pdInfo") PdInfoDTO dto,
+                @RequestPart(value = "fileList",required = false)  List<MultipartFile> files){
+
+        dto.setPdNo(dto.getPdNo());
 
         //수정 전 파일
-        PdInfoDTO oldDto = pdInfoService.selectPdInfoByPdNo(pdNo);
+        PdInfoDTO oldDto = pdInfoService.selectPdInfoByPdNo(dto.getPdNo());
 
-        //파일 없로드
-        List<MultipartFile> files = dto.getFiles();
+        //파일 업로드
+        //List<MultipartFile> files = dto.getFiles();
         List<String> uploadFileNames = customFileUtil.saveFile(files);
 
         //수정 안 한 파일

@@ -30,6 +30,8 @@ public interface PdInfoRepository extends JpaRepository<PdInfo, PdInfoPk>, PdInf
                             @Param("buyAmt") int buyAmt,
                             @Param("note") String note);
 
+
+
     //삭제
     @Modifying
     @Query("update PdInfo p set p.delFlag = :delFlag where p.pdNo = :pdNo")

@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Positions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -65,7 +66,7 @@ public class CustomFileUtil {
                 String contentType = file.getContentType();
                 if(contentType != null || contentType.startsWith("image")){
                     Path thumbnailPath = Paths.get(uploadPath, "s_" + saveName);
-                    Thumbnails.of(savaPath.toFile()).size(200,200).toFile(thumbnailPath.toFile());
+                    Thumbnails.of(savaPath.toFile()).size(180,200).toFile(thumbnailPath.toFile());
                 }
 
             } catch (IOException e) {

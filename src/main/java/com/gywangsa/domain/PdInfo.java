@@ -149,7 +149,13 @@ public class PdInfo {
         sizeList.add(size);
     }
 
+    //사이즈 리스트 등록
     public void changeSizeList(List<PdSize> sizeList) {
         this.sizeList = sizeList;
+    }
+
+    //사이즈 리스트 삭제
+    public void delSizeList(){
+        this.sizeList.clear();
     }
 }
