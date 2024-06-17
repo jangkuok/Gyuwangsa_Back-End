@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,7 +47,9 @@ public class PdInfoController {
     }
 
 
+
      //목록 조회
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
     @GetMapping("/item/{categoryNo}/{itemNo}")
     public PageResponseDTO<PdInfoDTO> selectListByPdInfo(PageRequestDTO pageRequestDTO,
                                                          @PathVariable("categoryNo") Long categoryNo,

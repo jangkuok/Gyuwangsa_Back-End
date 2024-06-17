@@ -22,14 +22,14 @@ public class CustomConfig implements WebMvcConfigurer {
     }
 
     //CORS 설정
-   @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        log.info("=====================================");
-        log.info("addCorsMappings 실행");
-        registry.addMapping("/**") //경로 설정 : 전부
-                .maxAge(500)
-                .allowedMethods("GET","POST", "PUT", "DELETE", "HEAD", "OPTIONS") //호출을 설정
-                .allowedOrigins("http://localhost:3000"); //어디에서 들어오는 경로 설정 : 3000
-
-    }
+//   @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        log.info("=====================================");
+//        log.info("addCorsMappings 실행");
+//        registry.addMapping("/**") //경로 설정 : 전부
+//                .maxAge(500)
+//                .allowedMethods("GET","POST", "PUT", "DELETE", "HEAD", "OPTIONS") //호출을 설정
+//                .allowedOrigins("http://localhost:3000"); //어디에서 들어오는 경로 설정 : 3000
+//
+//    }
 }
