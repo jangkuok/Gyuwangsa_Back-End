@@ -36,7 +36,11 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         log.info("check uri----------" + path);
         log.info("-----------------------------------------");
 
-        if(path.startsWith("/user/")){
+        //if(path.startsWith("/user/")){
+//        if(path.startsWith("/user/") || path.startsWith("/category/") || path.startsWith("/product/item/")
+//                || path.startsWith("/product/view/") || path.startsWith("/product/info")){
+            if(path.startsWith("/user/") || path.startsWith("/category/") || path.startsWith("/product/item/")
+                    || path.startsWith("/product/view/") || path.startsWith("/product/info/")){
             return true;
         }
 
@@ -58,25 +62,26 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
             log.info("JWT claims: " + claims);
 
-            String roleNm = String.valueOf(claims.get("roleNm"));
-            String pwd = String.valueOf(claims.get("pwd"));
-            String userId = String.valueOf(claims.get("userId"));
-            Long brandCd = Long.valueOf(String.valueOf(claims.get("brandCd")));
-            String brandNm = String.valueOf(claims.get("brandNm"));
-
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority("ROLE_"+roleNm));
-
-            MemberAuthorityDTO memberAuthorityDTO = new MemberAuthorityDTO(pwd, authorities, roleNm, userId, brandCd, brandNm);
-
-            log.info("-----------------UsernamePasswordAuthenticationToken------------------");
-            log.info(memberAuthorityDTO);
-            log.info(memberAuthorityDTO.getAuthorities());
-
-            UsernamePasswordAuthenticationToken authenticationToken
-                    = new UsernamePasswordAuthenticationToken(memberAuthorityDTO, pwd, memberAuthorityDTO.getAuthorities());
-
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+//            String roleNm = String.valueOf(claims.get("roleNm"));
+//            String pwd = String.valueOf(claims.get("pwd"));
+//            String userId = String.valueOf(claims.get("userId"));
+//            Long brandCd = Long.valueOf(String.valueOf(claims.get("brandCd")));
+//            String brandNm = String.valueOf(claims.get("brandNm"));
+//            String note = String.valueOf(claims.get("note"));
+//
+//            List<GrantedAuthority> authorities = new ArrayList<>();
+//            authorities.add(new SimpleGrantedAuthority("ROLE_"+roleNm));
+//
+//            MemberAuthorityDTO memberAuthorityDTO = new MemberAuthorityDTO(pwd, authorities, roleNm, userId, brandCd, brandNm, note);
+//
+//            log.info("-----------------UsernamePasswordAuthenticationToken------------------");
+//            log.info(memberAuthorityDTO);
+//            log.info(memberAuthorityDTO.getAuthorities());
+//
+//            UsernamePasswordAuthenticationToken authenticationToken
+//                    = new UsernamePasswordAuthenticationToken(memberAuthorityDTO, pwd, memberAuthorityDTO.getAuthorities());
+//
+//            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
             //성공하면 다음 페이지 이동
             filterChain.doFilter(request, response);

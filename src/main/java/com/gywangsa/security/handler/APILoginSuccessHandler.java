@@ -1,7 +1,10 @@
 package com.gywangsa.security.handler;
 
 import com.google.gson.Gson;
+import com.gywangsa.domain.Member;
 import com.gywangsa.dto.MemberAuthorityDTO;
+import com.gywangsa.repository.MemberRepository;
+import com.gywangsa.service.MemberService;
 import com.gywangsa.util.JWTUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,7 +16,9 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 
 @Log4j2
 public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
@@ -26,6 +31,7 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
         log.info("-----------------------APILoginSuccessHandler-----------------------");
 
         MemberAuthorityDTO memberAuthorityDTO = (MemberAuthorityDTO) authentication.getPrincipal();
+
         Map<String, Object> claims = memberAuthorityDTO.getClaims();
 
         String accessToken = JWTUtil.generateToken(claims, 10);
@@ -37,7 +43,7 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
         Gson gson = new Gson();
         String jsonStr = gson.toJson(claims);
 
-        response.setContentType("application/json; charset:UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
 
         PrintWriter printWriter = response.getWriter();
         printWriter.println(jsonStr);

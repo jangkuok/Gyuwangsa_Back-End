@@ -4,6 +4,7 @@ import com.gywangsa.security.Filter.JWTCheckFilter;
 import com.gywangsa.security.handler.APILoginFailHandler;
 import com.gywangsa.security.handler.APILoginSuccessHandler;
 import com.gywangsa.security.handler.CustomAccessDeniedHandler;
+import com.gywangsa.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,7 +27,7 @@ import java.util.Arrays;
 @Configuration
 @Log4j2
 @RequiredArgsConstructor
-@EnableMethodSecurity
+//@EnableMethodSecurity
 public class CustomSecurityConfig {
 
     @Bean
@@ -50,6 +51,7 @@ public class CustomSecurityConfig {
             config.loginPage("/user/login");
             //로그인 성공
             config.successHandler(new APILoginSuccessHandler());
+
             config.failureHandler(new APILoginFailHandler());
         });
 

@@ -67,6 +67,18 @@ public class Member {
         this.pwd = pwd;
     }
 
+    public void changeName(String name) {
+        this.name = name;
+    }
+
+    public void changeEmail(String email) {
+        this.email = email;
+    }
+
+    public void changePhone(String phone) {
+        this.phone = phone;
+    }
+
     public void changeAddrNo(String addrNo) {
         this.addrNo = addrNo;
     }
@@ -97,5 +109,9 @@ public class Member {
 
     public void changeApiKey(String apiKey) {
         this.apiKey = apiKey;
+    }
+
+    public void changeSexCd(String sexCd) {
+        this.sexCd = sexCd;
     }
 }

@@ -49,7 +49,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                 ma.getRoleNm(),
                 ma.getUserId(),
                 ma.getBrandCd(),
-                ma.getBrandNm()
+                ma.getBrandNm(),
+                ma.getNote()
         );
 
         log.info(memberAuthorityDTO);

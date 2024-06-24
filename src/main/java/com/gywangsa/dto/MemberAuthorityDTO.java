@@ -27,14 +27,16 @@ public class MemberAuthorityDTO extends User {
 
 
     public MemberAuthorityDTO(String pwd, List<GrantedAuthority> authorities,String roleNm, String userId,
-                              Long brandCd, String brandNm) {
+                              Long brandCd, String brandNm, String note) {
         super(userId, pwd, authorities);
         this.roleNm = roleNm;
         this.pwd = pwd;
         this.userId = userId;
         this.brandCd = brandCd;
         this.brandNm = brandNm;
+        this.note = note;
     }
+
     //jwt
     public Map<String, Object> getClaims() {
         Map<String, Object> dataMap = new HashMap<>();
@@ -43,6 +45,7 @@ public class MemberAuthorityDTO extends User {
         dataMap.put("pwd", pwd);
         dataMap.put("brandNm", brandNm);
         dataMap.put("brandCd", brandCd);
+        dataMap.put("note", note);
 
         return dataMap;
     }

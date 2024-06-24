@@ -34,7 +34,7 @@ public class PdInfoController {
 
 
      //상품 조회
-     @GetMapping("/{pdNo}")
+     @GetMapping("/info/{pdNo}")
      public PdInfoDTO selectPdInfoByPdNo(@PathVariable("pdNo") Long pdNo){
         log.info("==============>selectPdInfoByPdNo");
         return pdInfoService.selectPdInfoByPdNo(pdNo);
@@ -49,7 +49,7 @@ public class PdInfoController {
 
 
      //목록 조회
-    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    //@PreAuthorize("hasAnyRole('ROLE_USER')")
     @GetMapping("/item/{categoryNo}/{itemNo}")
     public PageResponseDTO<PdInfoDTO> selectListByPdInfo(PageRequestDTO pageRequestDTO,
                                                          @PathVariable("categoryNo") Long categoryNo,
