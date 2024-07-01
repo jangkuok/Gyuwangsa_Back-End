@@ -17,7 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(exclude = {"fileList", "sizeList"})
 @Table(name = "GYU_PD_INFO")
-@IdClass(PdInfoPk.class)
 @SequenceGenerator(
         name = "gyu_pd_info_pdNo_seq_gen",
         sequenceName = "gyu_pd_info_pdNo_seq",
@@ -25,13 +24,6 @@ import java.util.List;
         allocationSize = 1
 )
 public class PdInfo {
-    @Id
-    @Column(name = "category_no")
-    private Long categoryNo; //카테고리 번호
-
-    @Id
-    @Column(name = "item_no")
-    private Long itemNo; //중분류 번호
 
     @Id
     @Column(name = "pd_no")
@@ -41,9 +33,17 @@ public class PdInfo {
     )
     private Long pdNo; //상품 번호
 
-    @Id
+    @Column(name = "category_no")
+    private Long categoryNo; //카테고리 번호
+
+    @Column(name = "item_no")
+    private Long itemNo; //중분류 번호
+
     @Column(name = "brand_no")
     private Long brandNo; //브랜드 번호
+
+    @Column(name = "brand_nm", length = 300)
+    private String brandNm; //브랜드 이름
 
     @Column(name = "start_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -51,9 +51,6 @@ public class PdInfo {
 
     @Column(name = "pd_name", length = 300)
     private String pdName; //상품 이름
-
-    @Column(name = "brand_nm", length = 300)
-    private String brandNm; //브랜드 이름
 
     @Column(name = "end_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

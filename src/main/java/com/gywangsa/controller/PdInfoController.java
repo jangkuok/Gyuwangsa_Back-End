@@ -37,6 +37,11 @@ public class PdInfoController {
      @GetMapping("/info/{pdNo}")
      public PdInfoDTO selectPdInfoByPdNo(@PathVariable("pdNo") Long pdNo){
         log.info("==============>selectPdInfoByPdNo");
+
+        PdInfoDTO pdInfoDTO = pdInfoService.selectPdInfoByPdNo(pdNo);
+
+        log.info(pdInfoDTO);
+
         return pdInfoService.selectPdInfoByPdNo(pdNo);
      }
 

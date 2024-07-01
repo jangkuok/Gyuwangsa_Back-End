@@ -15,11 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-public interface PdInfoRepository extends JpaRepository<PdInfo, PdInfoPk>, PdInfoPaging {
+public interface PdInfoRepository extends JpaRepository<PdInfo, Long>, PdInfoPaging {
 
 
     //@EntityGraph(attributePaths = "fileList")
     @EntityGraph(attributePaths = {"fileList","sizeList"})
+    //@Query("select p from PdInfo p where p.pdNo= :pdNo")
     @Query("select p from PdInfo p where p.pdNo= :pdNo")
     Optional<PdInfo> selectPdInfoByPdNo(@Param("pdNo") Long pdNo);
 

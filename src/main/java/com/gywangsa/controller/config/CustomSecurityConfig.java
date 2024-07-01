@@ -27,7 +27,7 @@ import java.util.Arrays;
 @Configuration
 @Log4j2
 @RequiredArgsConstructor
-//@EnableMethodSecurity
+@EnableMethodSecurity
 public class CustomSecurityConfig {
 
     @Bean

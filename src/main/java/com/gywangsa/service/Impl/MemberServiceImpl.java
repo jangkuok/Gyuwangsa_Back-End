@@ -130,6 +130,8 @@ public class MemberServiceImpl implements MemberService {
         MemberAuthority ma = MemberAuthority.builder()
                 .userId(userId)
                 .pwd(member.getPwd())
+                .brandCd(0L)
+                .brandNm("")
                 .roleNm("USER")
                 .startDate(now)
                 .endDate(now.plusMonths(24))
