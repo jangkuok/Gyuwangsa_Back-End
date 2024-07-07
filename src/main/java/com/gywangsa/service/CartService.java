@@ -17,6 +17,9 @@ public interface CartService {
     //특정 회원 카트 조회
     List<CartItemListDTO> selectCartItems(String userId);
 
+    //특정 번호 카트 조회
+    CartItemListDTO selectCartItemNo(Long cartItemNo);
+
     //카트 상품 삭제
     List <CartItemListDTO> removeCartItem(Long cartItemNo);
 

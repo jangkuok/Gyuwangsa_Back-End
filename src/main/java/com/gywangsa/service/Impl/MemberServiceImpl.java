@@ -40,6 +40,9 @@ public class MemberServiceImpl implements MemberService {
 
     private String getKakaoAccessToken(String accessToken){
 
+        log.info("-------------------MemberServiceImpl-------------------");
+        log.info("============카카오 회원 accessToken============");
+
         String kakaoGetUserUrl = "https://kapi.kakao.com/v2/user/me";
 
         RestTemplate restTemplate = new RestTemplate();
@@ -75,6 +78,8 @@ public class MemberServiceImpl implements MemberService {
 
 
     private Member makeKakaoMember(String userId){
+        log.info("-------------------MemberServiceImpl-------------------");
+        log.info("============카카오 회원 가입============");
 
         String password = makePassword();
 
@@ -110,6 +115,8 @@ public class MemberServiceImpl implements MemberService {
     //카카오 로그인 회원 저장
     @Override
     public MemberDTO getKaKaoMember(String accessToken) {
+        log.info("-------------------MemberServiceImpl-------------------");
+        log.info("============카카오 회원 수정============");
 
         //accessToken 을 이용해서 사용자 정보 가져오기
         String userId = getKakaoAccessToken(accessToken);
@@ -150,10 +157,12 @@ public class MemberServiceImpl implements MemberService {
     //일반 회원 가입
     @Override
     public String joinMember(MemberDTO memberDTO) {
+        log.info("-------------------MemberServiceImpl-------------------");
+        log.info("============일반 회원 가입============");
         Member member = dtoMember(memberDTO);
 
         member.changePwd(passwordEncoder.encode(memberDTO.getPwd()));
-        member.changeJoinType("");
+        member.changeJoinType("홈페이지");
         member.changeApiKey("");
         member.changePwdYn('N');
         member.changePwdDate(now);
@@ -163,6 +172,42 @@ public class MemberServiceImpl implements MemberService {
                 .userId(memberDTO.getUserId())
                 .pwd(member.getPwd())
                 .roleNm("USER")
+                .brandCd(0L)
+                .brandNm("")
+                .startDate(now)
+                .endDate(now.plusMonths(24))
+                .note("")
+                .build();
+
+        Member result = memberRepository.save(member);
+        memberAuthorityRepository.save(ma);
+
+        String userId = member.getUserId();
+
+        return userId;
+    }
+
+    //브랜드 회원 가입
+    @Override
+    public String joinBrandMember(MemberDTO memberDTO, Long brandNo, String brandNm) {
+        log.info("-------------------MemberServiceImpl-------------------");
+        log.info("============브랜드 회원 가입============");
+
+        Member member = dtoMember(memberDTO);
+
+        member.changePwd(passwordEncoder.encode(memberDTO.getPwd()));
+        member.changeJoinType("홈페이지");
+        member.changeApiKey("");
+        member.changePwdYn('N');
+        member.changePwdDate(now);
+        member.changeLoginDate(now);
+
+        MemberAuthority ma = MemberAuthority.builder()
+                .userId(memberDTO.getUserId())
+                .pwd(member.getPwd())
+                .roleNm("BRAND_MANAGER")
+                .brandNm(brandNm)
+                .brandCd(brandNo)
                 .startDate(now)
                 .endDate(now.plusMonths(24))
                 .note("")
@@ -179,6 +224,8 @@ public class MemberServiceImpl implements MemberService {
     //회원 정보 수정
     @Override
     public void modifyUserInfo(MemberDTO memberDTO) {
+        log.info("-------------------MemberServiceImpl-------------------");
+        log.info("============회원 정보 수정============");
 
         Optional<Member> result = memberRepository.findById(memberDTO.getUserId());
 
@@ -202,16 +249,45 @@ public class MemberServiceImpl implements MemberService {
 
         memberAuthorityRepository.save(memberAuthority);
 
+    }
 
-//       memberRepository.modifyUserInfo(
-//               memberDTO.getUserId(),
-//               memberDTO.getPwd(),
-//               memberDTO.getName(),
-//               memberDTO.getEmail(),
-//               memberDTO.getPhone(),
-//               memberDTO.getAddrNo(),
-//               memberDTO.getAddr(),
-//               memberDTO.getAddrDtl(),
-//               memberDTO.getSexCd());
+    //회원 정보
+    @Override
+    public MemberDTO selectMemberInfo(String userId) {
+        log.info("-------------------MemberServiceImpl-------------------");
+        log.info("============회원 정보============");
+        Member member = memberRepository.selectMemberId(userId);
+        if(member == null){
+            member = new Member();
+        }
+        MemberDTO memberDTO = entityToDTO(member);
+        return memberDTO;
+    }
+
+    //회원 비밀번호 수정
+    @Override
+    public void modifyMemberChangePassword(String userId, String pwd) {
+        log.info("-------------------MemberServiceImpl-------------------");
+        log.info("============비밀번호 수정============");
+        memberRepository.modifyMemberChangePassword(userId,passwordEncoder.encode(pwd));
+
+        MemberAuthority memberAuthority = memberAuthorityRepository.selectUserAuthority(userId);
+
+        memberAuthority.changePwd(passwordEncoder.encode(pwd));
+
+        memberAuthorityRepository.save(memberAuthority);
+    }
+
+    //회원 아이디 찾기
+    @Override
+    public String selectMemberFindUserID(String name, String email) {
+        log.info("-------------------MemberServiceImpl-------------------");
+        log.info("============아이디 찾기============");
+
+        Member member = memberRepository.selectMemberFindUserID(name,email);
+
+        String userId = member.getUserId();
+
+        return userId;
     }
 }

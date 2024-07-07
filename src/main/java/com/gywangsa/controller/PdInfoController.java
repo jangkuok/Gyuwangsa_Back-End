@@ -42,7 +42,7 @@ public class PdInfoController {
 
         log.info(pdInfoDTO);
 
-        return pdInfoService.selectPdInfoByPdNo(pdNo);
+        return pdInfoDTO;
      }
 
     @GetMapping("/view/{fileNm}")
@@ -67,7 +67,7 @@ public class PdInfoController {
     //등록
     @PostMapping("/insertPdInfo")
         public Map<String, Long> insertPdInfo(@RequestPart(value = "pdInfo") PdInfoDTO pdInfoDTO,
-                                                             @RequestPart(value = "fileList",required = false)  List<MultipartFile> fileList){
+                                              @RequestPart(value = "fileList",required = false)  List<MultipartFile> fileList){
 
          log.info(pdInfoDTO.getPdName());
          log.info(pdInfoDTO.getSizeList());

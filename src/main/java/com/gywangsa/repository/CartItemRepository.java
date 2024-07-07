@@ -32,6 +32,15 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     @Query("select c.cartNo from Cart c left join CartItem ci on ci.cart = c where ci.cartItemNo = :cartItemNo")
     Long selectCartFromItem(@Param("cartItemNo") Long cartItemNo);
 
+    @Query("select new com.gywangsa.dto.CartItemListDTO(ci.cartItemNo, ci.count, p.brandNo, p.brandNm, ci.size, ci.color, p.pdNo, p.pdName, p.buyAmt, pi.fileNm) " +
+            "from CartItem ci " +
+            "inner join Cart c on ci.cart = c " +
+            "left join PdInfo p on ci.pdInfo = p " +
+            "left join p.fileList pi " +
+            "where pi.fileOrd = 0 " +
+            "and ci.cartItemNo = :cartItemNo " +
+            "order by ci.cartItemNo desc")
+    CartItemListDTO selectItemCartDTObyCartItemNo(@Param("cartItemNo") Long cartItemNo);
 
     //장바구니 아이템 번호로 모든 장바구니 조회
     @Query("select new com.gywangsa.dto.CartItemListDTO(ci.cartItemNo, ci.count, p.brandNo, p.brandNm, ci.size, ci.color, p.pdNo, p.pdName, p.buyAmt, pi.fileNm) " +

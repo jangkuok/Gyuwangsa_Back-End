@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
 public class Brand {
 
     @Id
-    @Column(name = "brand_cd")
+    @Column(name = "brand_no")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long brandCd;
+    private Long brandNo;
 
     @Column(name = "brand_nm")
     private String brandNm;
@@ -26,14 +26,20 @@ public class Brand {
     @Column(name = "brand_log")
     private String brandLog;
 
-    @Column(name = "add_no")
-    private String addNo;
+    @Column(name = "addr_no")
+    private String addrNo;
 
-    @Column(name = "add")
-    private String add;
+    @Column(name = "addr")
+    private String addr;
 
-    @Column(name = "add_dtl")
-    private String addDtl;
+    @Column(name = "addr_dtl")
+    private String addrDtl;
+
+    @Column(name = "com_call")
+    private String comCall;
+
+    @Column(name = "com_email")
+    private String comEmail;
 
     @Column(name = "deli_comp")
     private String deliComp;
@@ -51,4 +57,5 @@ public class Brand {
 
     @Column(name = "note")
     private String note;
+
 }

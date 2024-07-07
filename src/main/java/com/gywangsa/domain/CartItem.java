@@ -11,7 +11,7 @@ import lombok.*;
 @ToString(exclude = {"pdInfo","cart"})
 @Table(name = "GYU_CART_ITEM",
         indexes = {@Index(name = "idx_cartItem_cart",columnList = "cart_no"),
-                @Index(name = "idx_cartItem_pd_no",columnList = "pd_no")}
+                @Index(name = "idx_cartItem_pd",columnList = "pd_no")}
 )
 public class CartItem {
 

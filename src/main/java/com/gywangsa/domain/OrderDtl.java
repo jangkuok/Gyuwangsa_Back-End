@@ -11,15 +11,14 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"pdInfo","orderInfo","brand"})
-@Table(name = "GYU_ORDER_INFO",
-        indexes = {@Index(name = "idx_orderInfo_orderInfo",columnList = "ordNo"),
-                @Index(name = "idx_orderInfo_pd_no",columnList = "pd_no"),
-                @Index(name = "idx_orderInfo_brand_cd",columnList = "brand_cd")}
+@ToString(exclude = {"pdInfo","orderInfo"})
+@Table(name = "GYU_ORDER_DTL",
+        indexes = {@Index(name = "idx_orderInfo_orderInfo",columnList = "ord_No"),
+                @Index(name = "idx_orderInfo_pdInfo",columnList = "pd_no")}
 )
 public class OrderDtl {
     @Id
-    @Column
+    @Column(name = "ord_dtl_no")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ordDtlNo;
 
@@ -33,6 +32,9 @@ public class OrderDtl {
     @Column(name = "deli_status")
     private String deliStatus;
 
+    @Column(name = "deli_amt")
+    private String deliAmt;
+
     @Column(name = "phone")
     private String phone;
 
@@ -45,16 +47,24 @@ public class OrderDtl {
     @Column(name = "addr_dtl")
     private String addrDtl;
 
+    @Column(name = "buy_amt")
+    private int buyAmt;
+
+    @Column(name = "pd_size")
+    private String size;
+
+    @Column(name = "pd_color")
+    private String color;
+
+    @Column(name = "count")
+    private int count;
+
     @ManyToOne
     @JoinColumn(name = "pd_no")
     private PdInfo pdInfo;
 
     @ManyToOne
-    @JoinColumn(name = "brand_cd")
-    private Brand brand;
-
-    @ManyToOne
-    @JoinColumn(name = "ordNo")
+    @JoinColumn(name = "ord_No")
     private OrderInfo orderInfo;
 
 }

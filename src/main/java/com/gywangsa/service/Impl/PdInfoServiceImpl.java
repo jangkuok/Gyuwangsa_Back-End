@@ -117,7 +117,7 @@ public class PdInfoServiceImpl implements PdInfoService {
         return responseDTO;
     }
 */
-
+    //상품 목록
     @Override
     public PageResponseDTO<PdInfoDTO> selectListByPdInfo(PageRequestDTO pageRequestDTO,Long categoryNo, Long itemNo) {
 
@@ -168,6 +168,7 @@ public class PdInfoServiceImpl implements PdInfoService {
 
         return entityPdInfo(pdInfo);
     }*/
+
     @Override
     public PdInfoDTO selectPdInfoByPdNo(Long pdNo) {
 

@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString(exclude = "member")
 @Table(name = "GYU_ORDER_INFO",
-        indexes = {@Index(name = "idx_ord_userId",columnList = "userId")}
+        indexes = {@Index(name = "idx_ord_user",columnList = "user_id")}
 )
 public class OrderInfo {
 
@@ -20,6 +20,6 @@ public class OrderInfo {
     private Long ordNo;
 
     @OneToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private  Member member;
 }

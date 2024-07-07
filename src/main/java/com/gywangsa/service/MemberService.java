@@ -13,8 +13,20 @@ public interface MemberService {
     //일반 회원 가입
     String joinMember(MemberDTO memberDTO);
 
+    //브랜드 회원 가입
+    String joinBrandMember(MemberDTO memberDTO, Long brandNo, String brandNm);
+
     //회원 정보 수정
     void modifyUserInfo(MemberDTO memberDTO);
+
+    //비밀번호 초기화
+    void modifyMemberChangePassword(String userId, String pwd);
+
+    //회원 정보 찾기
+    MemberDTO selectMemberInfo(String userId);
+
+    //회원 아이디 찾기
+    String selectMemberFindUserID(String name, String email);
 
 
     default MemberDTO entityToDTO(Member member){
@@ -22,8 +34,8 @@ public interface MemberService {
                 member.getUserId(),
                 member.getPwd(),
                 member.getName(),
-                member.getPhone(),
                 member.getEmail(),
+                member.getPhone(),
                 member.getAddrNo(),
                 member.getAddr(),
                 member.getAddrDtl(),

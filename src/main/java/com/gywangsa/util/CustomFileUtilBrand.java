@@ -4,7 +4,6 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.geometry.Positions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -18,16 +17,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Component
 @Log4j2
 @RequiredArgsConstructor
-public class CustomFileUtil {
+public class CustomFileUtilBrand {
 
-    @Value("${org.zerock.upload.path}")
+    @Value("brandLogImage")
     private String uploadPath;
 
     @PostConstruct
@@ -45,36 +42,40 @@ public class CustomFileUtil {
         log.info("=====================================");
     }
 
-    //파일 리스트 업로드
-    public List<String> saveFile(List<MultipartFile> files) throws RuntimeException {
+    //브랜드 이미지 업로드
+    public String saveBrandFile(MultipartFile files) throws RuntimeException {
+        log.info("-------------------CustomFileUtilBrand-------------------");
+        log.info("============로고 파일 등록============");
 
-        if (files == null || files.size() == 0) {
+        if (files == null) {
+            log.info("============파일 없음============");
             return null;
         }
 
-        List<String> uploadNames = new ArrayList<>();
-        for (MultipartFile file : files) {
+        String saveName = UUID.randomUUID().toString() + "_" + files.getOriginalFilename();
 
-            String saveName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-            Path savaPath = Paths.get(uploadPath, saveName);
-            try {
-                //원본 파일
-                Files.copy(file.getInputStream(), savaPath);
-                uploadNames.add(saveName);
+        Path savaPath = Paths.get(uploadPath, saveName);
 
-                //썸네일 파일
-                String contentType = file.getContentType();
-                if (contentType != null || contentType.startsWith("image")) {
-                    Path thumbnailPath = Paths.get(uploadPath, "s_" + saveName);
-                    Thumbnails.of(savaPath.toFile()).size(180, 200).toFile(thumbnailPath.toFile());
-                }
+        try {
+            //원본 파일
+            Files.copy(files.getInputStream(), savaPath);
+            log.info("원본 생성");
 
-            } catch (IOException e) {
-                e.printStackTrace();
+            //썸네일 파일
+            String contentType = files.getContentType();
+            if (contentType != null || contentType.startsWith("image")) {
+                Path thumbnailPath = Paths.get(uploadPath, "s_" + saveName);
+                Thumbnails.of(savaPath.toFile()).size(180, 200).toFile(thumbnailPath.toFile());
+                log.info("썸네일 생성");
             }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return uploadNames;
+
+        return saveName;
     }
+
     //파일 조회
     public ResponseEntity<Resource> selectByFile(String fileName) {
         Resource resource = new FileSystemResource(uploadPath + File.separator + fileName);
@@ -92,22 +93,21 @@ public class CustomFileUtil {
     }
 
     //파일 삭제
-    public void deleteFiles(List<String> fileNames) {
-        if (fileNames == null || fileNames.size() == 0) {
+    public void deleteFiles(String fileName) {
+        if (fileName == null) {
             return;
         }
 
-        fileNames.forEach(fileName -> {
-            //썸네일 삭제
-            String thumbnailFileName = "s_" + fileName;
-            Path thumbnailPath = Paths.get(uploadPath, thumbnailFileName);
-            Path filePath = Paths.get(uploadPath, fileName);
-            try {
-                Files.deleteIfExists(filePath);
-                Files.deleteIfExists(thumbnailPath);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        //썸네일 삭제
+        String thumbnailFileName = "s_" + fileName;
+
+        Path thumbnailPath = Paths.get(uploadPath, thumbnailFileName);
+        Path filePath = Paths.get(uploadPath, fileName);
+        try {
+            Files.deleteIfExists(filePath);
+            Files.deleteIfExists(thumbnailPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

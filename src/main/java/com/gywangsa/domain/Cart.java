@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString(exclude = "member")
 @Table(name = "GYU_CART_INFO",
-        indexes = {@Index(name = "idx_cart_userId",columnList = "userId")}
+        indexes = {@Index(name = "idx_cart_user",columnList = "userId")}
 )
 public class Cart {
     @Id
@@ -21,7 +21,7 @@ public class Cart {
     private Long cartNo;
 
     @OneToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private Member member;
 
 }

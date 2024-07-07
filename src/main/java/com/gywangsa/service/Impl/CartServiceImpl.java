@@ -123,6 +123,12 @@ public class CartServiceImpl implements CartService {
         return cartItemRepository.selectItemCartDTObyUserID(userId);
     }
 
+    @Override
+    public CartItemListDTO selectCartItemNo(Long cartItemNo) {
+        log.info("---------------------특정 번호 카트 조회-----------------------");
+        return cartItemRepository.selectItemCartDTObyCartItemNo(cartItemNo);
+    }
+
     //카트 상품 삭제
     @Override
     public List<CartItemListDTO> removeCartItem(Long cartItemNo) {
