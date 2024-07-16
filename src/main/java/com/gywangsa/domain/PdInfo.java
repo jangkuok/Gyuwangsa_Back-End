@@ -56,7 +56,6 @@ public class PdInfo {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDate; //유효종료일
 
-
     @Column(name = "buy_amt")
     private int buyAmt; //가격
 

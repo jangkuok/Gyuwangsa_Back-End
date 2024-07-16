@@ -43,6 +43,8 @@ public class PdInfoDTO {
     private String note; //설명
 
     private boolean delFlag; //삭제 상태
+    
+    private boolean likeFlag; //좋아요 상태
 
     @Builder.Default
     private  List<MultipartFile> files = new ArrayList<>();

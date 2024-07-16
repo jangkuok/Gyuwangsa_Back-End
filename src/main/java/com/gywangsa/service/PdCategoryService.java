@@ -16,6 +16,12 @@ public interface PdCategoryService {
 
     //조회
     List<PdCategoryDTO> selectListCategory();
+    
+    //카테고리 조회
+    List<PdCategoryDTO> selectCategory();
+
+
+    
 
     default PdCategoryDTO entityCategory(PdCategory category){
 

@@ -26,8 +26,19 @@ public class PdCategoryItemController {
     public List<PdCategoryDTO> selectListCategory(){
         return categoryService.selectListCategory();
     }
+
     @GetMapping("/item/{categoryNo}")
     public List<PdItemDTO> selectListItem(@PathVariable("categoryNo") Long categoryNo){
+        return pdItemService.selectListItem(categoryNo);
+    }
+
+    @GetMapping("/brand/category")
+    public List<PdCategoryDTO> selectCategory(){
+        return categoryService.selectCategory();
+    }
+
+    @GetMapping("/brand/item/{categoryNo}")
+    public List<PdItemDTO> selectListBrandItem(@PathVariable("categoryNo") Long categoryNo){
         return pdItemService.selectListItem(categoryNo);
     }
 }

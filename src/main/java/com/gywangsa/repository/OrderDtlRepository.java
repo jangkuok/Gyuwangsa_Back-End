@@ -55,6 +55,17 @@ public interface OrderDtlRepository extends JpaRepository<OrderDtl,Long> {
             "where p.brandNo = :brandNo " +
             "and pi.fileOrd = 0" +
             "order by odd.ordDate desc ")
-    List<OrderDtlDTO> selectOrderDtlDTOByBrand(@Param("brandNo") Long brandNo);
+    Page<OrderDtlDTO> selectOrderDtlDTOByBrand(Pageable pageable, @Param("brandNo") Long brandNo);
 
+    //브랜드 주문 상태 조회
+    @Query("select new com.gywangsa.dto.OrderDtlDTO(oi.member.userId, odd.ordDtlNo, odd.ordDate, odd.deliNo, odd.deliStatus, odd.deliAmt, odd.phone, odd.addrNo, odd.addr, odd.addrDtl, odd.size, odd.color, odd.buyAmt, odd.count, p.brandNo, p.brandNm, p.pdNo, p.pdName, pi.fileNm) " +
+            "from OrderDtl odd " +
+            "inner join OrderInfo oi on odd.orderInfo = oi " +
+            "left join PdInfo p on odd.pdInfo = p " +
+            "left join p.fileList pi " +
+            "where p.brandNo = :brandNo " +
+            "and odd.deliStatus = :deliStatus " +
+            "and pi.fileOrd = 0" +
+            "order by odd.ordDate desc ")
+    Page<OrderDtlDTO> selectBrandOrderDeliStatus(Pageable pageable, @Param("brandNo") Long brandNo, @Param("deliStatus") String deliStatus);
 }

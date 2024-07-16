@@ -30,7 +30,6 @@ public class PdInfoPagingImpl extends QuerydslRepositorySupport implements PdInf
                 pageRequestDTO.getSize(),
                 Sort.by("pdNo").descending());
 
-
         //객체 생성
         QPdInfo pdInfo = QPdInfo.pdInfo;
         QPdFile pdFile = QPdFile.pdFile;

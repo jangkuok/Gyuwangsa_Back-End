@@ -1,10 +1,7 @@
 package com.gywangsa.domain;
 
 
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;

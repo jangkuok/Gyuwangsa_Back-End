@@ -18,7 +18,16 @@ public interface OrderService {
     //상품 취소
     void removeOrder(Long ordDtlNo, String deliStatus);
 
+    //회원 주문 목록
     PageResponseDTO<OrderDtlDTO> selectListByOrderMember(PageRequestDTO pageRequestDTO, String userId);
+
+    //브랜드 주문 목록
+    PageResponseDTO<OrderDtlDTO> selectBrandOrderList(PageRequestDTO pageRequestDTO, Long brandNo);
+
+    //브랜드 주문상태 목록
+    PageResponseDTO<OrderDtlDTO> selectBrandOrderDeliStatus(PageRequestDTO pageRequestDTO, Long brandNo, String deliStatus);
+
+
 
     default OrderDtlDTO entityOrder(OrderDtl orderDtl,String userId) {
         OrderDtlDTO orderDtlDTO = OrderDtlDTO.builder()

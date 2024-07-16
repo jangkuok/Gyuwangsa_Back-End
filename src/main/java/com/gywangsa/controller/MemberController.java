@@ -45,8 +45,10 @@ public class MemberController {
     public Map<String, String> modifyUserInfo(@RequestBody MemberDTO memberDTO){
         log.info("-------------------MemberController-------------------");
         log.info("============회원 수정============");
+
         log.info(memberDTO);
-        memberService.modifyUserInfo(memberDTO);
+
+        //memberService.modifyUserInfo(memberDTO);
         return Map.of("result", "수정완료");
     }
 

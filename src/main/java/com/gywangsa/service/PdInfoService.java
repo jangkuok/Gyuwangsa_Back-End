@@ -28,8 +28,19 @@ public interface PdInfoService {
     //상품 리스트 조회
     PageResponseDTO<PdInfoDTO> selectListByPdInfo(PageRequestDTO pageRequestDTO,Long categoryNo, Long itemNo);
 
+    //브랜드 리스트 조회
+    PageResponseDTO<PdInfoDTO> selectListByBrandPdInfo(PageRequestDTO pageRequestDTO,Long brandNo);
+
+    //브랜드 리스트 카테고리 조회
+    PageResponseDTO<PdInfoDTO> selectListByBrandCategory(PageRequestDTO pageRequestDTO, Long categoryNo, Long brandNo);
+
+    //브랜드 리스트 카테고리 아이템 조회
+    PageResponseDTO<PdInfoDTO> selectListByBrandCategoryItem(PageRequestDTO pageRequestDTO, Long categoryNo, Long itemNo, Long brandNo);
+
+    //상품 키워드 조회
+    PageResponseDTO<PdInfoDTO> selectBrandByKeyword(PageRequestDTO pageRequestDTO, String keyword);
+
     //특정 상품 조회
-    //PdInfoDTO selectPdInfoByPdNo(Long brandNo, Long categoryNo, Long itemNo, Long pdNo);
     PdInfoDTO selectPdInfoByPdNo(Long pdNo);
 
     //Entity -> DTO

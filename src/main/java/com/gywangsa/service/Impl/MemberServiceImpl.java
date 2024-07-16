@@ -231,7 +231,9 @@ public class MemberServiceImpl implements MemberService {
 
         Member member = result.orElseThrow();
 
-        member.changePwd(passwordEncoder.encode(memberDTO.getPwd()));
+        if(!memberDTO.getPwd().equals(result.get().getPwd()) || memberDTO.getPwd() != "" || memberDTO.getPwd() != null){
+            member.changePwd(passwordEncoder.encode(memberDTO.getPwd()));
+        }
         member.changeName(memberDTO.getName());
         member.changeEmail(memberDTO.getEmail());
         member.changePhone(memberDTO.getPhone());
@@ -244,7 +246,9 @@ public class MemberServiceImpl implements MemberService {
 
         MemberAuthority memberAuthority = memberAuthorityRepository.selectUserAuthority(memberDTO.getUserId());
 
-        memberAuthority.changePwd(member.getPwd());
+        if(!memberDTO.getPwd().equals(result.get().getPwd()) || memberDTO.getPwd() != "" || memberDTO.getPwd() != null){
+            memberAuthority.changePwd(member.getPwd());
+        }
         memberAuthority.changeNote("");
 
         memberAuthorityRepository.save(memberAuthority);

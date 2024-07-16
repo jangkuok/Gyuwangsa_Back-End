@@ -11,10 +11,11 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"pdInfo","orderInfo"})
+@ToString(exclude = {"pdInfo","orderInfo","brand"})
 @Table(name = "GYU_ORDER_DTL",
         indexes = {@Index(name = "idx_orderInfo_orderInfo",columnList = "ord_No"),
-                @Index(name = "idx_orderInfo_pdInfo",columnList = "pd_no")}
+                @Index(name = "idx_orderInfo_pdInfo",columnList = "pd_no"),
+                @Index(name = "idx_orderInfo_brand",columnList = "brand_no")}
 )
 public class OrderDtl {
     @Id
@@ -62,6 +63,10 @@ public class OrderDtl {
     @ManyToOne
     @JoinColumn(name = "pd_no")
     private PdInfo pdInfo;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_no")
+    private Brand brand;
 
     @ManyToOne
     @JoinColumn(name = "ord_No")

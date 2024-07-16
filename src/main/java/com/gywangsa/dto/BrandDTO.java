@@ -16,7 +16,11 @@ public class BrandDTO {
 
     private String brandNm;
 
+    private String engNm;
+
     private String brandLog;
+
+    private String brandMainImage;
 
     private String addrNo;
 

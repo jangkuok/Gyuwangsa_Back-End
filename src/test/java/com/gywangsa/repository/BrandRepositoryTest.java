@@ -39,4 +39,10 @@ public class BrandRepositoryTest {
 
         brandRepository.save(brand);
     }
+
+    @Test
+    public void testList(){
+        //log.info(brandRepository.findByBrandNmContaining("우"));
+
+    }
 }

@@ -156,7 +156,13 @@ public class PdInfoRepositoryTest {
         Pageable pageable = PageRequest.of(0,10,Sort.by("pdNo").descending());
         Page<Object[]> list = pdInfoRepository.selectListItemPdInfo(pageable,1L,1L);
         list.getContent().forEach(arr -> log.info(Arrays.toString(arr)));
+    }
 
+    @Test
+    public void testPaging2(){
+        Pageable pageable = PageRequest.of(0,10,Sort.by("pdNo").descending());
+        Page<Object[]> list = pdInfoRepository.selectListByBrandPdInfo(pageable,1L);
+        list.getContent().forEach(arr -> log.info(Arrays.toString(arr)));
     }
 
     @Transactional
@@ -206,9 +212,7 @@ public class PdInfoRepositoryTest {
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder().build();
         pdInfoRepository.selectListByPdInfo(pageRequestDTO,1L,1L);
 
-
     }
-
 
 }
 

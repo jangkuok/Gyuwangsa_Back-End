@@ -66,4 +66,11 @@ public class PdInfoServiceTest {
         log.info(responseDTO.getDtoList().size());
     }
 
+    @Transactional
+    @Test
+    public void selectListByKeyword(){
+
+        //log.info(pdInfoService.selectBrandByKeyword("맨투맨"));
+    }
+
 }

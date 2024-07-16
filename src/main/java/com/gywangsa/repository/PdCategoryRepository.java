@@ -15,4 +15,8 @@ public interface PdCategoryRepository extends JpaRepository<PdCategory,Long> {
     @Query("select c from PdCategory c join fetch c.pdItemList ")
     List<PdCategory> selectCategoryItem();
 
+    @Query("select c from PdCategory c")
+    List<PdCategory> selectCategory();
+
+
 }

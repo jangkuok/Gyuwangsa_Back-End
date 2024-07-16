@@ -24,6 +24,7 @@ public class OrderController {
     private final CartService cartService;
 
 
+    //주문 목록
     @PostMapping("/orderPageLoad")
         public List<CartItemListDTO> orderPageLoad(@RequestBody Map<String, Object> cartItemNo) {
         log.info("-----------------OrderController-----------------");
@@ -39,6 +40,7 @@ public class OrderController {
         return cartItemDTOList;
     }
 
+    //주문 추가
     @PostMapping("/addOrder")
     public List<OrderDtlDTO> addOrder(@RequestPart(value = "orderDtlDTO") List<OrderDtlDTO> orderDtlDTO) {
 
@@ -59,15 +61,18 @@ public class OrderController {
         return list;
     }
     
+    //특정 아이디 주문 목록
     @GetMapping("/orderList/{userId}")
     public PageResponseDTO<OrderDtlDTO> selectOrderListByUser(PageRequestDTO pageRequestDTO,
                                                               @PathVariable("userId") String userId){
         log.info("-------------------OrderController-------------------");
         log.info("============회원 주문 리스트 조회============");
+        log.info(orderService.selectListByOrderMember(pageRequestDTO,userId));
 
         return orderService.selectListByOrderMember(pageRequestDTO,userId);
     }
 
+    //주문 취소
     @Transactional
     @PutMapping("/orderCancel/{ordDtlNo}")
     public Map<String, String> removeOrder(@PathVariable("ordDtlNo") Long ordDtlNo){

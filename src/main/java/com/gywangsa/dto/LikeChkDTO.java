@@ -1,19 +1,18 @@
 package com.gywangsa.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
-@SuperBuilder
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageRequestDTO {
+public class LikeChkDTO {
 
-    @Builder.Default
-    private int page = 1;
-    @Builder.Default
-    private int size = 20;
+    private Long likeNo;
+    private String userId;
+    private Long pdNo;
 }

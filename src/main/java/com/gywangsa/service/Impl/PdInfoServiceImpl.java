@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,6 +30,34 @@ import java.util.stream.Collectors;
 public class PdInfoServiceImpl implements PdInfoService {
 
     private final PdInfoRepository pdInfoRepository;
+
+
+    private Pageable getPageable(PageRequestDTO pageRequestDTO){
+            Pageable pageable = PageRequest.of(
+            pageRequestDTO.getPage() -1,
+            pageRequestDTO.getSize(),
+            Sort.by("pdNo").descending());
+            return  pageable;
+    }
+
+    private List<PdInfoDTO> getPdInfoDTOList(Page<Object[]> page){
+
+        List<PdInfoDTO> dtoList = page.get().map(m -> {
+
+            PdInfo pdInfo = (PdInfo) m[0];
+            PdFile pdFile = (PdFile) m[1];
+
+            PdInfoDTO pdInfoDTO = entityPdInfo(pdInfo);
+
+            String imgStr = pdFile.getFileNm();
+            pdInfoDTO.setImageList(List.of(imgStr));
+
+            return pdInfoDTO;
+
+        }).collect(Collectors.toList());
+
+        return dtoList;
+    }
 
     //상품 등록
     @Override
@@ -93,55 +122,19 @@ public class PdInfoServiceImpl implements PdInfoService {
 
         pdInfoRepository.removePdInfoByPdNo(pdNo);
     }
-/*
 
-    //상품 리스트 조회
-    @Override
-    public PageResponseDTO<PdInfoDTO> selectListByPdInfo(PageRequestDTO pageRequestDTO) {
-        //JPA
-        Page<PdInfo> result = pdInfoRepository.selectListByPdInfo(pageRequestDTO);
-
-        //Entity List => DTO List 변형
-        List<PdInfoDTO> pdInfoDTOList = result.
-                get().
-                map(pdInfo -> entityPdInfo(pdInfo)).collect(Collectors.toList());
-
-        //리스트 담기
-        PageResponseDTO<PdInfoDTO> responseDTO =
-                PageResponseDTO.<PdInfoDTO>pageResponseDTOMethod()
-                .dtoList(pdInfoDTOList)
-                .pageRequestDTO(pageRequestDTO)
-                .total(result.getTotalElements())
-                .build();
-
-        return responseDTO;
-    }
-*/
     //상품 목록
     @Override
     public PageResponseDTO<PdInfoDTO> selectListByPdInfo(PageRequestDTO pageRequestDTO,Long categoryNo, Long itemNo) {
 
         //페이징 처리
-        Pageable pageable = PageRequest.of(
-                pageRequestDTO.getPage() -1,
-                pageRequestDTO.getSize(),
-                Sort.by("pdNo").descending());
+        Pageable pageable = getPageable(pageRequestDTO);
+
         //JPA
         Page<Object[]> result = pdInfoRepository.selectListItemPdInfo(pageable,categoryNo,itemNo);
 
 
-        List<PdInfoDTO> dtoList = result.get().map(m -> {
-            PdInfoDTO pdInfoDTO = null;
-            PdInfo pdInfo = (PdInfo) m[0];
-            PdFile pdFile = (PdFile) m[1];
-
-            pdInfoDTO = entityPdInfo(pdInfo);
-
-            String imgStr = pdFile.getFileNm();
-            pdInfoDTO.setImageList(List.of(imgStr));
-
-            return pdInfoDTO;
-        }).collect(Collectors.toList());
+        List<PdInfoDTO> dtoList = getPdInfoDTOList(result);
 
         long totalCount = result.getTotalElements();
 
@@ -151,6 +144,85 @@ public class PdInfoServiceImpl implements PdInfoService {
                 .pageRequestDTO(pageRequestDTO)
                 .build();
     }
+
+    //특정 브랜드 조회
+    @Override
+    public PageResponseDTO<PdInfoDTO> selectListByBrandPdInfo(PageRequestDTO pageRequestDTO, Long brandNo) {
+        //페이징 처리
+        Pageable pageable = getPageable(pageRequestDTO);
+
+        //JPA
+        Page<Object[]> result = pdInfoRepository.selectListByBrandPdInfo(pageable,brandNo);
+
+        List<PdInfoDTO> dtoList = getPdInfoDTOList(result);
+
+        long totalCount = result.getTotalElements();
+
+        return PageResponseDTO.<PdInfoDTO>pageResponseDTOMethod()
+                .dtoList(dtoList)
+                .total(totalCount)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+    }
+
+    //특정 브랜드 카테고리 조회
+    @Override
+    public PageResponseDTO<PdInfoDTO> selectListByBrandCategory(PageRequestDTO pageRequestDTO, Long categoryNo, Long brandNo) {
+        //페이징 처리
+        Pageable pageable = getPageable(pageRequestDTO);
+
+        //JPA
+        Page<Object[]> result = pdInfoRepository.selectListByBrandCategory(pageable,categoryNo,brandNo);
+
+        List<PdInfoDTO> dtoList = getPdInfoDTOList(result);
+
+        long totalCount = result.getTotalElements();
+
+        return PageResponseDTO.<PdInfoDTO>pageResponseDTOMethod()
+                .dtoList(dtoList)
+                .total(totalCount)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+    }
+
+    //브랜드 리스트 카테고리 아이템 조회
+    @Override
+    public PageResponseDTO<PdInfoDTO> selectListByBrandCategoryItem(PageRequestDTO pageRequestDTO, Long categoryNo, Long itemNo, Long brandNo) {
+
+        Pageable pageable = getPageable(pageRequestDTO);
+
+        Page<Object[]> result = pdInfoRepository.selectListByBrandCategoryItem(pageable,categoryNo,itemNo,brandNo);
+
+        List<PdInfoDTO> dtoList = getPdInfoDTOList(result);
+
+        long totalCount = result.getTotalElements();
+
+        return PageResponseDTO.<PdInfoDTO>pageResponseDTOMethod()
+                .dtoList(dtoList)
+                .total(totalCount)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+    }
+
+    //상품 키워드
+    @Override
+    public PageResponseDTO<PdInfoDTO> selectBrandByKeyword(PageRequestDTO pageRequestDTO,String keyword) {
+
+        Pageable pageable = getPageable(pageRequestDTO);
+
+        Page<Object[]> result = pdInfoRepository.findByPdNameContaining(pageable,keyword);
+
+        List<PdInfoDTO> dtoList = getPdInfoDTOList(result);
+
+        long totalCount = result.getTotalElements();
+
+        return PageResponseDTO.<PdInfoDTO>pageResponseDTOMethod()
+                .dtoList(dtoList)
+                .total(totalCount)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+    }
+
 
     //특정 상품 조회
 /*    @Override
@@ -169,6 +241,8 @@ public class PdInfoServiceImpl implements PdInfoService {
         return entityPdInfo(pdInfo);
     }*/
 
+
+    //상품 조회
     @Override
     public PdInfoDTO selectPdInfoByPdNo(Long pdNo) {
 
@@ -179,6 +253,6 @@ public class PdInfoServiceImpl implements PdInfoService {
         log.info(pdInfo);
         return entityPdInfo(pdInfo);
     }
-    
-    
+
+
 }

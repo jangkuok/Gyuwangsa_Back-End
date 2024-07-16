@@ -17,4 +17,8 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
 
     @Query("select b from Brand b where b.brandNo = :brandNo")
     Brand selectBrandByBrandNo(@Param("brandNo") Long brandNo);
+
+    @Query("select b from Brand b where b.brandNm like %:keyword% or b.engNm like %:keyword%")
+    Page<Brand> findByBrandNmContaining(Pageable pageable,String keyword);
+
 }

@@ -1,19 +1,15 @@
 package com.gywangsa.service.Impl;
 
-import com.gywangsa.domain.Member;
-import com.gywangsa.domain.OrderDtl;
-import com.gywangsa.domain.OrderInfo;
-import com.gywangsa.domain.PdInfo;
+import com.gywangsa.domain.*;
 import com.gywangsa.dto.OrderDtlDTO;
 import com.gywangsa.dto.PageRequestDTO;
 import com.gywangsa.dto.PageResponseDTO;
-import com.gywangsa.repository.MemberRepository;
-import com.gywangsa.repository.OrderDtlRepository;
-import com.gywangsa.repository.OrderInfoRepository;
-import com.gywangsa.repository.PdInfoRepository;
+import com.gywangsa.dto.PdInfoDTO;
+import com.gywangsa.repository.*;
 import com.gywangsa.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,9 +39,45 @@ public class OrderServiceImpl implements OrderService {
 
     private final PdInfoRepository pdInfoRepository;
 
+    private final BrandRepository brandRepository;
+
     private LocalDateTime now = LocalDateTime.now();
 
+    private Pageable getPageable(PageRequestDTO pageRequestDTO){
+        Pageable pageable = PageRequest.of(
+                pageRequestDTO.getPage() -1,
+                pageRequestDTO.getSize(),
+                Sort.by("ordDate").descending());
+        return  pageable;
+    }
 
+    private List<OrderDtlDTO> getPdInfoDTOList(Page<OrderDtlDTO> result){
+
+        List<OrderDtlDTO> dtoList = result.get().map( order ->
+                OrderDtlDTO.builder()
+                        .userId(order.getUserId())
+                        .ordDtlNo(order.getOrdDtlNo())
+                        .ordDate(order.getOrdDate())
+                        .deliNo(order.getDeliNo())
+                        .deliStatus(order.getDeliStatus())
+                        .deliAmt(order.getDeliAmt())
+                        .phone(order.getPhone())
+                        .addrNo(order.getAddrNo())
+                        .addr(order.getAddr())
+                        .addrDtl(order.getAddrDtl())
+                        .size(order.getSize())
+                        .color(order.getColor())
+                        .buyAmt(order.getBuyAmt())
+                        .count(order.getCount())
+                        .brandNo(order.getBrandNo())
+                        .brandNm(order.getBrandNm())
+                        .pdNo(order.getPdNo())
+                        .pdName(order.getPdName())
+                        .imageFile(order.getImageFile())
+                        .build()).collect(Collectors.toList());
+
+        return dtoList;
+    }
 
     //주문번호 생성
     private String makeDeliNo(){
@@ -77,6 +111,7 @@ public class OrderServiceImpl implements OrderService {
         log.info("============상품 주문 추가============");
         String userId = orderDtlDTO.getUserId();
         Long pdNo = orderDtlDTO.getPdNo();
+        Long brandNo = orderDtlDTO.getBrandNo();
 
         Optional<OrderInfo> result = orderInfoRepository.selectOrderInfoMember(userId);
 
@@ -101,6 +136,8 @@ public class OrderServiceImpl implements OrderService {
 
         PdInfo pdInfo = result2.orElseThrow();
 
+        Brand brand = brandRepository.selectBrandByBrandNo(brandNo);
+
         OrderDtl orderDtl = OrderDtl.builder()
                 .ordDate(now)
                 .deliNo(makeDeliNo())
@@ -113,6 +150,7 @@ public class OrderServiceImpl implements OrderService {
                 .size(orderDtlDTO.getSize())
                 .color(orderDtlDTO.getColor())
                 .count(orderDtlDTO.getCount())
+                .brand(brand)
                 .pdInfo(pdInfo)
                 .orderInfo(orderInfo)
                 .build();
@@ -127,40 +165,80 @@ public class OrderServiceImpl implements OrderService {
 
         log.info("-------------------OrderServiceImpl-------------------");
         log.info("============회원 주문 목록 조회============");
-        
-        Pageable pageable = PageRequest.of(
-                pageRequestDTO.getPage() -1,
-                pageRequestDTO.getSize(),
-                Sort.by("ordDate").descending());
+
+        Pageable pageable = getPageable(pageRequestDTO);
 
         log.info(pageable);
         log.info(userId);
 
         Page<OrderDtlDTO> result = orderDtlRepository.selectOrderDtlDTOByUserId(pageable,userId);
 
-        List<OrderDtlDTO> dtoList = result.get().map(order ->
-                OrderDtlDTO.builder()
-                        .userId(userId)
-                        .ordDtlNo(order.getOrdDtlNo())
-                        .deliNo(order.getDeliNo())
-                        .deliStatus(order.getDeliStatus())
-                        .deliAmt(order.getDeliAmt())
-                        .phone(order.getPhone())
-                        .addrNo(order.getAddrNo())
-                        .addr(order.getAddr())
-                        .addrDtl(order.getAddrDtl())
-                        .size(order.getSize())
-                        .color(order.getColor())
-                        .buyAmt(order.getBuyAmt())
-                        .count(order.getCount())
-                        .brandNo(order.getBrandNo())
-                        .brandNm(order.getBrandNm())
-                        .pdNo(order.getPdNo())
-                        .pdName(order.getPdName())
-                        .imageFile(order.getImageFile())
-                        .build()).collect(Collectors.toList());
+//        List<OrderDtlDTO> dtoList = result.get().map(order ->
+//
+//                OrderDtlDTO.builder()
+//                        .userId(userId)
+//                        .ordDtlNo(order.getOrdDtlNo())
+//                        .ordDate(order.getOrdDate())
+//                        .deliNo(order.getDeliNo())
+//                        .deliStatus(order.getDeliStatus())
+//                        .deliAmt(order.getDeliAmt())
+//                        .phone(order.getPhone())
+//                        .addrNo(order.getAddrNo())
+//                        .addr(order.getAddr())
+//                        .addrDtl(order.getAddrDtl())
+//                        .size(order.getSize())
+//                        .color(order.getColor())
+//                        .buyAmt(order.getBuyAmt())
+//                        .count(order.getCount())
+//                        .brandNo(order.getBrandNo())
+//                        .brandNm(order.getBrandNm())
+//                        .pdNo(order.getPdNo())
+//                        .pdName(order.getPdName())
+//                        .imageFile(order.getImageFile())
+//                        .build()).collect(Collectors.toList());
+
+        List<OrderDtlDTO> dtoList =  getPdInfoDTOList(result);
 
         long totalCount = result.getTotalElements();
+
+        return PageResponseDTO.<OrderDtlDTO>pageResponseDTOMethod()
+                .dtoList(dtoList)
+                .total(totalCount)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+    }
+
+    //브랜드 주문 목록
+    @Override
+    public PageResponseDTO<OrderDtlDTO> selectBrandOrderList(PageRequestDTO pageRequestDTO, Long brandNo) {
+
+        Pageable pageable = getPageable(pageRequestDTO);
+
+        Page<OrderDtlDTO> result = orderDtlRepository.selectOrderDtlDTOByBrand(pageable,brandNo);
+
+        List<OrderDtlDTO> dtoList =  getPdInfoDTOList(result);
+
+        long totalCount = result.getTotalElements();
+
+
+        return PageResponseDTO.<OrderDtlDTO>pageResponseDTOMethod()
+                .dtoList(dtoList)
+                .total(totalCount)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+    }
+
+    //브랜드 주문 상태 목록
+    @Override
+    public PageResponseDTO<OrderDtlDTO> selectBrandOrderDeliStatus(PageRequestDTO pageRequestDTO, Long brandNo, String deliStatus) {
+        Pageable pageable = getPageable(pageRequestDTO);
+
+        Page<OrderDtlDTO> result = orderDtlRepository.selectBrandOrderDeliStatus(pageable,brandNo,deliStatus);
+
+        List<OrderDtlDTO> dtoList =  getPdInfoDTOList(result);
+
+        long totalCount = result.getTotalElements();
+
 
         return PageResponseDTO.<OrderDtlDTO>pageResponseDTOMethod()
                 .dtoList(dtoList)

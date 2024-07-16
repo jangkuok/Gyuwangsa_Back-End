@@ -36,11 +36,10 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         log.info("check uri----------" + path);
         log.info("-----------------------------------------");
 
-        //if(path.startsWith("/user/")){
-//        if(path.startsWith("/user/") || path.startsWith("/category/") || path.startsWith("/product/item/")
-//                || path.startsWith("/product/view/") || path.startsWith("/product/info")){
-            if(path.startsWith("/user/") || path.startsWith("/category/") || path.startsWith("/product/item/")
-                    || path.startsWith("/product/view/") || path.startsWith("/product/") || path.startsWith("/brand/") || path.startsWith("/order/")){
+            if(path.startsWith("/user/") || path.startsWith("/category/") || path.startsWith("/product/item/") || path.startsWith("/product/info/")
+                    || path.startsWith("/product/view/") || path.startsWith("/product/search/")  || path.startsWith("/brand/")
+                    || path.startsWith("/like/") || path.startsWith("/color/")
+                   ){
             return true;
         }
 

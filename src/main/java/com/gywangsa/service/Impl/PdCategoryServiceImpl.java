@@ -24,7 +24,7 @@ public class PdCategoryServiceImpl implements PdCategoryService {
     private final PdCategoryRepository categoryRepository;
 
 
-    //카테고리 조회
+    //카테고리/아이템 조회
     @Override
     public List<PdCategoryDTO> selectListCategory() {
 
@@ -34,4 +34,15 @@ public class PdCategoryServiceImpl implements PdCategoryService {
 
         return categoryDTOList;
     }
+    
+    //카테고리 조회
+    @Override
+    public List<PdCategoryDTO> selectCategory() {
+        List<PdCategory> result = categoryRepository.selectCategory();
+
+        List<PdCategoryDTO> categoryDTOList = result.stream().map(list -> entityCategory(list)).collect(Collectors.toList());
+
+        return categoryDTOList;
+    }
+
 }
