@@ -70,7 +70,7 @@ public class PdInfoServiceTest {
     @Test
     public void selectListByKeyword(){
 
-        //log.info(pdInfoService.selectBrandByKeyword("맨투맨"));
+        log.info(pdInfoService.selectLikePdInfoRank());
     }
 
 }

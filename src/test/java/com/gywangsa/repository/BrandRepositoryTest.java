@@ -42,7 +42,7 @@ public class BrandRepositoryTest {
 
     @Test
     public void testList(){
-        //log.info(brandRepository.findByBrandNmContaining("우"));
+        log.info(brandRepository.selectRandomBrandList());
 
     }
 }

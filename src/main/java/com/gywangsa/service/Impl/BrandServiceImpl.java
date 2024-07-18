@@ -114,12 +114,26 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public BrandDTO selectBrandByBrandNo(Long brandNo) {
         log.info("-------------------BrandServiceImpl-------------------");
-        log.info("============브랜드 조회============");
+        log.info("============특정 브랜드 조회============");
         Brand brand = brandRepository.selectBrandByBrandNo(brandNo);
 
         if(brand == null){
             brand = new Brand();
         }
         return entityBrand(brand);
+    }
+
+    //브랜드 랜덤 조회
+    @Override
+    public List<BrandDTO> selectRandomBrandList() {
+        log.info("-------------------BrandServiceImpl-------------------");
+        log.info("============브랜드 랜덤 조회============");
+
+        List<Brand> brand = brandRepository.selectRandomBrandList();
+
+        List<BrandDTO> dtoList = brand.stream().map(list ->
+                entityBrand(list)).collect(Collectors.toList());
+
+        return dtoList;
     }
 }

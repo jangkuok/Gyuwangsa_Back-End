@@ -223,23 +223,25 @@ public class PdInfoServiceImpl implements PdInfoService {
                 .build();
     }
 
+    //좋아요 순위 상품
+    @Override
+    public List<PdInfoDTO> selectLikePdInfoRank() {
+       List<PdInfo> pdInfoList = pdInfoRepository.selectLikePdInfoRank();
 
-    //특정 상품 조회
-/*    @Override
-    public PdInfoDTO selectPdInfoByPdNo(Long brandNo, Long categoryNo, Long itemNo, Long pdNo) {
+       List<PdInfoDTO> dtoList = pdInfoList.stream().map( list ->
+               entityPdInfo(list)
+               ).collect(Collectors.toList());
 
-        PdInfoPk pdInfoPk = new PdInfoPk();
+       List<PdInfoDTO> list = new ArrayList<>();
 
-        pdInfoPk.setCategoryNo(categoryNo);
-        pdInfoPk.setItemNo(itemNo);
-        pdInfoPk.setPdNo(pdNo);
-        pdInfoPk.setBrandNo(brandNo);
+       for(int i = 0; i<20; i++){
+           PdInfoDTO dto = dtoList.get(i);
+           list.add(dto);
+       }
 
-        Optional<PdInfo> result = pdInfoRepository.findById(pdInfoPk);
-        PdInfo pdInfo = result.orElseThrow();
+       return list;
+    }
 
-        return entityPdInfo(pdInfo);
-    }*/
 
 
     //상품 조회
@@ -254,5 +256,15 @@ public class PdInfoServiceImpl implements PdInfoService {
         return entityPdInfo(pdInfo);
     }
 
+    //랜덤 상품 목록
+    @Override
+    public List<PdInfoDTO> selectRandomPdList() {
+        List<PdInfo> pdInfoList = pdInfoRepository.selectRandomPdList();
 
+        List<PdInfoDTO> dtoList = pdInfoList.stream().map( list ->
+                entityPdInfo(list)
+        ).collect(Collectors.toList());
+
+        return dtoList;
+    }
 }

@@ -43,6 +43,12 @@ public interface PdInfoService {
     //특정 상품 조회
     PdInfoDTO selectPdInfoByPdNo(Long pdNo);
 
+    //좋아요 순위 상품
+    List<PdInfoDTO> selectLikePdInfoRank();
+
+    //상품 랜덤 목록
+    List<PdInfoDTO> selectRandomPdList();
+
     //Entity -> DTO
     default PdInfoDTO entityPdInfo(PdInfo pdInfo){
         PdInfoDTO pdInfoDTO = PdInfoDTO.builder()

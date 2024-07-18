@@ -27,6 +27,9 @@ public interface BrandService {
     //브랜드 키워드 검색
     PageResponseDTO<BrandDTO> selectBrandByKeyword(PageRequestDTO pageRequestDTO, String keyword);
 
+    //브랜드 랜덤 리스트
+    List<BrandDTO> selectRandomBrandList();
+
 
     default BrandDTO entityBrand(Brand brand){
         BrandDTO brandDTO = BrandDTO.builder()

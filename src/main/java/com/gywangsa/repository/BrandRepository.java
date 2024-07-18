@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface BrandRepository extends JpaRepository<Brand, Long> {
 
-    @Query("select b from Brand b")
+    @Query("select b from Brand b where b.stateCd = true")
     Page<Brand> selectBrandList(Pageable pageable);
 
     @Query("select b from Brand b where b.brandNo = :brandNo")
@@ -20,5 +20,8 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
 
     @Query("select b from Brand b where b.brandNm like %:keyword% or b.engNm like %:keyword%")
     Page<Brand> findByBrandNmContaining(Pageable pageable,String keyword);
+
+    @Query(value = "select * from gyu_sys_brand where state_cd = true  order by random() limit 20",nativeQuery = true)
+    List<Brand> selectRandomBrandList();
 
 }

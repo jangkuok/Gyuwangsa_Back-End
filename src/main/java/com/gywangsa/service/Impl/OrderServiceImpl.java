@@ -140,8 +140,8 @@ public class OrderServiceImpl implements OrderService {
 
         OrderDtl orderDtl = OrderDtl.builder()
                 .ordDate(now)
-                .deliNo(makeDeliNo())
-                .deliStatus("주문 완료")
+                .deliNo(orderDtlDTO.getDeliNo())
+                .deliStatus("결제 완료")
                 .phone(orderDtlDTO.getPhone())
                 .addrNo(orderDtlDTO.getAddrNo())
                 .addr(orderDtlDTO.getAddr())
@@ -149,6 +149,7 @@ public class OrderServiceImpl implements OrderService {
                 .buyAmt(pdInfo.getBuyAmt())
                 .size(orderDtlDTO.getSize())
                 .color(orderDtlDTO.getColor())
+                .deliAmt(orderDtlDTO.getDeliAmt())
                 .count(orderDtlDTO.getCount())
                 .brand(brand)
                 .pdInfo(pdInfo)

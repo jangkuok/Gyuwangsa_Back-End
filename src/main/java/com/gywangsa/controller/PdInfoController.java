@@ -273,4 +273,20 @@ public class PdInfoController {
         return pdInfoDTOPageResponseDTO;
     }
 
+    @GetMapping("/likeRank")
+    public List<PdInfoDTO> selectLikePdInfoRank(){
+        log.info("-------------------PdInfoController-------------------");
+        log.info("============좋아요 랭크 조회============");
+
+        return pdInfoService.selectLikePdInfoRank();
+    }
+
+    @GetMapping("/randomPdInfo")
+    public List<PdInfoDTO> selectRandomPdList(){
+        log.info("-------------------PdInfoController-------------------");
+        log.info("============랜덤 상품 조회============");
+
+        return pdInfoService.selectRandomPdList();
+    }
+
 }

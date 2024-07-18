@@ -241,5 +241,13 @@ public class BrandController {
 
         return brandService.selectBrandByKeyword(pageRequestDTO, keyword);
     }
+
+    //브랜드 키워드 검색
+    @GetMapping("/random")
+    public List<BrandDTO> selectRandomBrandList() {
+        log.info("-------------------OrderController-------------------");
+        log.info("============브랜드 랜덤 조회============");
+        return brandService.selectRandomBrandList();
+    }
 }
 

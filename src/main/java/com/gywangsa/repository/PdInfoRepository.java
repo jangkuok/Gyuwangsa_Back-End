@@ -47,33 +47,41 @@ public interface PdInfoRepository extends JpaRepository<PdInfo, Long>, PdInfoPag
     void removePdInfoByPdNo(@Param("pdNo") Long pdNo);
 
     //상품 리스트
-    @Query("select p, fl from PdInfo p left join p.fileList fl where p.categoryNo = :categoryNo and p.itemNo = :itemNo  and p.delFlag = false and fl.fileOrd = 0")
+    @Query("select p, fl from PdInfo p left join p.fileList fl where p.delFlag = false and p.categoryNo = :categoryNo and p.itemNo = :itemNo  and p.delFlag = false and fl.fileOrd = 0")
     Page<Object[]> selectListItemPdInfo(Pageable pageable,
                                         @Param("categoryNo") Long categoryNo,
                                         @Param("itemNo") Long itemNo);
 
     //특정 브랜드 상품 목록
-    @Query("select p, fl from PdInfo p left join p.fileList fl where p.brandNo = :brandNo and p.delFlag = false and fl.fileOrd = 0")
+    @Query("select p, fl from PdInfo p left join p.fileList fl where p.delFlag = false and p.brandNo = :brandNo and p.delFlag = false and fl.fileOrd = 0")
     Page<Object[]> selectListByBrandPdInfo(Pageable pageable,
                                            @Param("brandNo") Long brandNo);
 
 
     //특정 브랜드 상품 카테고리 목록
-    @Query("select p, fl from PdInfo p left join p.fileList fl where p.categoryNo = :categoryNo and p.brandNo = :brandNo and p.delFlag = false and fl.fileOrd = 0")
+    @Query("select p, fl from PdInfo p left join p.fileList fl where p.delFlag = false and p.categoryNo = :categoryNo and p.brandNo = :brandNo and p.delFlag = false and fl.fileOrd = 0")
     Page<Object[]> selectListByBrandCategory(Pageable pageable,
                                            @Param("categoryNo") Long categoryNo,
                                            @Param("brandNo") Long brandNo);
 
     //특정 브랜드 상품 카테고리 아이템 목록
-    @Query("select p, fl from PdInfo p left join p.fileList fl where p.categoryNo = :categoryNo and p.itemNo = :itemNo and p.brandNo = :brandNo and p.delFlag = false and fl.fileOrd = 0")
+    @Query("select p, fl from PdInfo p left join p.fileList fl  where p.delFlag = false and p.categoryNo = :categoryNo and p.itemNo = :itemNo and p.brandNo = :brandNo and p.delFlag = false and fl.fileOrd = 0")
     Page<Object[]> selectListByBrandCategoryItem(Pageable pageable,
                                              @Param("categoryNo") Long categoryNo,
                                                  @Param("itemNo") Long itemNo,
                                              @Param("brandNo") Long brandNo);
 
     //키워드 검색
-    @Query("select p, fl from PdInfo p left join p.fileList fl where p.pdName like %:keyword% and p.delFlag = false and fl.fileOrd = 0")
+    @Query("select p, fl from PdInfo p left join p.fileList fl where p.delFlag = false and p.pdName like %:keyword% and p.delFlag = false and fl.fileOrd = 0")
     Page<Object[]> findByPdNameContaining(Pageable pageable,@Param("keyword") String keyword);
+
+    //상품 좋아요 순위 검색
+    @Query("select p from PdInfo p  where p.delFlag = false order by p.likeCnt desc")
+    List<PdInfo> selectLikePdInfoRank();
+
+    //상품 랜덤 목록
+    @Query(value = "select * from gyu_pd_info where del_flag = false order by random() limit 15",nativeQuery = true)
+    List<PdInfo> selectRandomPdList();
 
 
 }
