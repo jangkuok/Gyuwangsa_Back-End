@@ -28,11 +28,10 @@ public interface OrderDtlRepository extends JpaRepository<OrderDtl,Long> {
                          @Param("addr") String addr,
                          @Param("addrDtl") String addrDtl);
 
-    //배송 취소
+    //배송 상태 변경
     @Modifying
     @Query("update OrderDtl odd set odd.deliStatus = :deliStatus where odd.ordDtlNo = :ordDtlNo")
     void removeOrder(@Param("ordDtlNo") Long ordDtlNo, @Param("deliStatus") String deliStatus);
-
 
     //회원 주문 조회
     @Query("select new com.gywangsa.dto.OrderDtlDTO(oi.member.userId, odd.ordDtlNo, odd.ordDate, odd.deliNo, odd.deliStatus, odd.deliAmt, odd.phone, odd.addrNo, odd.addr, odd.addrDtl, odd.size, odd.color, odd.buyAmt, odd.count, p.brandNo, p.brandNm, p.pdNo, p.pdName, pi.fileNm) " +

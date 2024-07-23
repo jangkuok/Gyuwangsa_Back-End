@@ -48,7 +48,7 @@ public class MemberController {
 
         log.info(memberDTO);
 
-        //memberService.modifyUserInfo(memberDTO);
+        memberService.modifyUserInfo(memberDTO);
         return Map.of("result", "수정완료");
     }
 

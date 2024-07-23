@@ -273,11 +273,20 @@ public class MemberServiceImpl implements MemberService {
     public void modifyMemberChangePassword(String userId, String pwd) {
         log.info("-------------------MemberServiceImpl-------------------");
         log.info("============비밀번호 수정============");
-        memberRepository.modifyMemberChangePassword(userId,passwordEncoder.encode(pwd));
+
+        String ecPwd = passwordEncoder.encode(pwd);
+
+        Optional<Member> result = memberRepository.findById(userId);
+
+        Member member = result.orElseThrow();
+
+        member.changePwd(ecPwd);
+
+        memberRepository.save(member);
 
         MemberAuthority memberAuthority = memberAuthorityRepository.selectUserAuthority(userId);
 
-        memberAuthority.changePwd(passwordEncoder.encode(pwd));
+        memberAuthority.changePwd(ecPwd);
 
         memberAuthorityRepository.save(memberAuthority);
     }
@@ -288,7 +297,14 @@ public class MemberServiceImpl implements MemberService {
         log.info("-------------------MemberServiceImpl-------------------");
         log.info("============아이디 찾기============");
 
-        Member member = memberRepository.selectMemberFindUserID(name,email);
+        Optional<Member> result = memberRepository.selectMemberFindUserID(name,email);
+
+        Member member = result.orElseThrow();
+
+        if(member != null){
+            String userId = "";
+            return userId;
+        }
 
         String userId = member.getUserId();
 

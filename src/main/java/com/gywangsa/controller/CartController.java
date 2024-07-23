@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ import java.util.List;
 public class CartController {
     private final CartService cartService;
 
+    //카트 수량 체크
     //@PreAuthorize("#cartItemDTO.userId == authentication.name")
     @PostMapping("/changeCart")
     public List<CartItemListDTO> changeCart(@RequestPart(value = "cartItemDTO") List<CartItemDTO> cartItemDTO) {
@@ -36,6 +38,7 @@ public class CartController {
         return list;
     }
 
+    //카트 수량 체크
     //@PreAuthorize("#cartItemDTO.userId == authentication.name")
     @PostMapping("/changeCartPage")
         public List<CartItemListDTO> changeCart(@RequestBody CartItemDTO cartItemDTO){
@@ -53,6 +56,7 @@ public class CartController {
 
     }
 
+    //카트 리스트
     //@PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/items")
     public List<CartItemListDTO> selectCartItems(Principal principal) {
@@ -62,10 +66,22 @@ public class CartController {
         return cartService.selectCartItems(userId);
     }
 
+    
+    //카트 삭제
     @DeleteMapping("/removeItem/{cartItemNo}")
     public List<CartItemListDTO> removeCart(@PathVariable("cartItemNo") Long cartItemNo) {
         log.info("-------------------removeCart----------------------");
+        log.info(cartItemNo);
         return cartService.removeCartItem(cartItemNo);
     }
 
+    //카트 삭제
+    @PutMapping("/removeCartList")
+    public void removeCartList(@RequestBody Map<String, Object> cartItemNo) {
+        log.info("-------------------removeCartList----------------------");
+
+        for(String key : cartItemNo.keySet()){
+            cartService.removeCartItem(Long.valueOf(String.valueOf(cartItemNo.get(key))));
+        }
+    }
 }

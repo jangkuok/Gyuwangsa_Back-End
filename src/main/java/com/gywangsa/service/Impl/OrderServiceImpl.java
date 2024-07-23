@@ -79,30 +79,6 @@ public class OrderServiceImpl implements OrderService {
         return dtoList;
     }
 
-    //주문번호 생성
-    private String makeDeliNo(){
-        log.info("-------------------OrderServiceImpl-------------------");
-        log.info("============주문번호 생성============");
-        
-        Random random = new Random();
-
-        int randomStrLen = 10;
-
-        StringBuffer randomBuf = new StringBuffer();
-
-        for (int i = 0; i < randomStrLen; i++) {
-            if (random.nextBoolean()) {
-                randomBuf.append((char)((int)(random.nextInt(26)) + 97));
-            } else {
-                randomBuf.append(random.nextInt(10));
-            }
-        }
-        String randomStr = randomBuf.toString();
-
-        return randomStr;
-    }
-
-
     //상품 주문 추가
     @Override
     public OrderDtlDTO addOrder(OrderDtlDTO orderDtlDTO) {
@@ -174,30 +150,6 @@ public class OrderServiceImpl implements OrderService {
 
         Page<OrderDtlDTO> result = orderDtlRepository.selectOrderDtlDTOByUserId(pageable,userId);
 
-//        List<OrderDtlDTO> dtoList = result.get().map(order ->
-//
-//                OrderDtlDTO.builder()
-//                        .userId(userId)
-//                        .ordDtlNo(order.getOrdDtlNo())
-//                        .ordDate(order.getOrdDate())
-//                        .deliNo(order.getDeliNo())
-//                        .deliStatus(order.getDeliStatus())
-//                        .deliAmt(order.getDeliAmt())
-//                        .phone(order.getPhone())
-//                        .addrNo(order.getAddrNo())
-//                        .addr(order.getAddr())
-//                        .addrDtl(order.getAddrDtl())
-//                        .size(order.getSize())
-//                        .color(order.getColor())
-//                        .buyAmt(order.getBuyAmt())
-//                        .count(order.getCount())
-//                        .brandNo(order.getBrandNo())
-//                        .brandNm(order.getBrandNm())
-//                        .pdNo(order.getPdNo())
-//                        .pdName(order.getPdName())
-//                        .imageFile(order.getImageFile())
-//                        .build()).collect(Collectors.toList());
-
         List<OrderDtlDTO> dtoList =  getPdInfoDTOList(result);
 
         long totalCount = result.getTotalElements();
@@ -248,7 +200,7 @@ public class OrderServiceImpl implements OrderService {
                 .build();
     }
 
-    //상품 취소
+    //배송 상태 변경
     @Override
     public void removeOrder(Long ordDtlNo, String deliStatus) {
         log.info("-------------------OrderServiceImpl-------------------");
@@ -257,5 +209,6 @@ public class OrderServiceImpl implements OrderService {
         log.info(deliStatus);
         orderDtlRepository.removeOrder(ordDtlNo, deliStatus);
     }
+
 }
 

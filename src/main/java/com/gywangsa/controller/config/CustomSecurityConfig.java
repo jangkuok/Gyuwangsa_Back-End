@@ -74,12 +74,14 @@ public class CustomSecurityConfig {
     //CORS 설정
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
+        log.info("-----------------------corsConfigurationSource-----------------------");
 
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList("http://api.iamport.kr"));
         configuration.setAllowedMethods(Arrays.asList("HEAD","GET","POST", "PUT", "DELETE", "HEAD", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization","Cache-Control","Content-Type"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization","Cache-Control","Content-Type", "Accept"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

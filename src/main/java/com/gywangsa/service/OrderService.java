@@ -15,7 +15,7 @@ public interface OrderService {
     //상품 주문
     OrderDtlDTO addOrder(OrderDtlDTO orderDtlDTO);
 
-    //상품 취소
+    //배송 상태 변경
     void removeOrder(Long ordDtlNo, String deliStatus);
 
     //회원 주문 목록

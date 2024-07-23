@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface MemberRepository extends JpaRepository<Member,String> {
 
     //@EntityGraph(attributePaths = {"roleEmpList"})
@@ -14,7 +16,8 @@ public interface MemberRepository extends JpaRepository<Member,String> {
     Member selectMemberId(@Param("userId") String userId);
 
     @Query("select m from Member m where m.name = :name and m.email = :email")
-    Member selectMemberFindUserID(@Param("name") String name, @Param("email") String email);
+    Optional<Member> selectMemberFindUserID(@Param("name") String name, @Param("email") String email);
+
 
     @Modifying
     @Query("update Member m set m.pwd = :pwd where m.userId = :userId")

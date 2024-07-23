@@ -72,15 +72,18 @@ public class OrderController {
         return orderService.selectListByOrderMember(pageRequestDTO,userId);
     }
 
-    //주문 취소
+    //배송 상태 변경
     @Transactional
-    @PutMapping("/orderCancel/{ordDtlNo}")
-    public Map<String, String> removeOrder(@PathVariable("ordDtlNo") Long ordDtlNo){
+    @PutMapping("/orderCancel/{ordDtlNo}/{deliState}")
+    public Map<String, String> removeOrder(@PathVariable("ordDtlNo") Long ordDtlNo,
+                                           @PathVariable("deliState") String deliState){
         log.info("-------------------OrderController-------------------");
         log.info("============회원 주문 취소============");
 
-        orderService.removeOrder(ordDtlNo,"주문 취소");
+        orderService.removeOrder(ordDtlNo,deliState);
 
-        return Map.of("result", "주문취소");
+        return Map.of("result", deliState);
     }
+
+
 }
