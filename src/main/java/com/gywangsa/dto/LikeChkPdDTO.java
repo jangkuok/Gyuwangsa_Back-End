@@ -14,10 +14,10 @@ public class LikeChkPdDTO {
     private Long brandNo;
     private String brandNm;
     private String pdName;
-    private String buyAmt;
+    private int buyAmt;
     private String imageFile;
 
-    public LikeChkPdDTO(Long likeChkPdNo, String userId, Long brandNo, String brandNm, String pdName, String buyAmt, String imageFile) {
+    public LikeChkPdDTO(Long likeChkPdNo, String userId, Long brandNo, String brandNm, String pdName, int buyAmt, String imageFile) {
         this.likeChkPdNo = likeChkPdNo;
         this.userId = userId;
         this.brandNo = brandNo;

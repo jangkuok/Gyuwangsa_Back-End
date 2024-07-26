@@ -1,11 +1,9 @@
 package com.gywangsa.service.Impl;
 
 
-import com.gywangsa.domain.Member;
-import com.gywangsa.domain.MemberAuthority;
+import com.gywangsa.domain.*;
 import com.gywangsa.dto.MemberDTO;
-import com.gywangsa.repository.MemberAuthorityRepository;
-import com.gywangsa.repository.MemberRepository;
+import com.gywangsa.repository.*;
 import com.gywangsa.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -35,10 +34,18 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberAuthorityRepository memberAuthorityRepository;
 
+    private final OrderInfoRepository orderInfoRepository;
+
+    private final CartRepository cartRepository;
+
+    private final OrderDtlRepository orderDtlRepository;
+
+    private final LikeChkRepository likeChkRepository;
+
     private LocalDateTime now = LocalDateTime.now();
 
 
-    private String getKakaoAccessToken(String accessToken){
+    private String getKakaoAccessToken(String accessToken) {
 
         log.info("-------------------MemberServiceImpl-------------------");
         log.info("============카카오 회원 accessToken============");
@@ -49,18 +56,18 @@ public class MemberServiceImpl implements MemberService {
 
         HttpHeaders headers = new HttpHeaders();
 
-        headers.add("Authorization","Bearer "+accessToken);
-        headers.add("Content-type","application/x-www-form-urlencoded;charset=utf-8");
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         UriComponents uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(kakaoGetUserUrl).build();
 
-        ResponseEntity<LinkedHashMap> responseEntity = restTemplate.exchange(uriComponentsBuilder.toUri(), HttpMethod.GET,entity,LinkedHashMap.class);
+        ResponseEntity<LinkedHashMap> responseEntity = restTemplate.exchange(uriComponentsBuilder.toUri(), HttpMethod.GET, entity, LinkedHashMap.class);
 
         log.info(responseEntity);
 
-        LinkedHashMap<String,LinkedHashMap> bodyMap = responseEntity.getBody();
+        LinkedHashMap<String, LinkedHashMap> bodyMap = responseEntity.getBody();
 
         //LinkedHashMap<String, String> kakaoAccount = bodyMap.get("properties");
 
@@ -71,13 +78,13 @@ public class MemberServiceImpl implements MemberService {
         log.info("--------------------------------------------");
         log.info("-------------MemberServiceImpl--------------");
         log.info(bodyMap);
-        log.info("userId : " +userId);
+        log.info("userId : " + userId);
 
         return userId;
     }
 
 
-    private Member makeKakaoMember(String userId){
+    private Member makeKakaoMember(String userId) {
         log.info("-------------------MemberServiceImpl-------------------");
         log.info("============카카오 회원 가입============");
 
@@ -103,10 +110,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     //패스워드 생성
-    private String makePassword(){
+    private String makePassword() {
         StringBuffer buffer = new StringBuffer();
-        for (int i = 0; i < 10 ; i++){
-            buffer.append((char)((int)(Math.random()*55)+65));
+        for (int i = 0; i < 10; i++) {
+            buffer.append((char) ((int) (Math.random() * 55) + 65));
         }
         return buffer.toString();
     }
@@ -124,7 +131,7 @@ public class MemberServiceImpl implements MemberService {
         Optional<Member> result = memberRepository.findById(userId);
 
         //회원 정보가 있을 경우
-        if(result.isPresent()) {
+        if (result.isPresent()) {
             log.info("회원 존재");
             MemberDTO dto = entityToDTO(result.get());
             return dto;
@@ -231,7 +238,7 @@ public class MemberServiceImpl implements MemberService {
 
         Member member = result.orElseThrow();
 
-        if(!memberDTO.getPwd().equals(result.get().getPwd()) || memberDTO.getPwd() != "" || memberDTO.getPwd() != null){
+        if (!memberDTO.getPwd().equals(result.get().getPwd()) || memberDTO.getPwd() != "" || memberDTO.getPwd() != null) {
             member.changePwd(passwordEncoder.encode(memberDTO.getPwd()));
         }
         member.changeName(memberDTO.getName());
@@ -246,7 +253,7 @@ public class MemberServiceImpl implements MemberService {
 
         MemberAuthority memberAuthority = memberAuthorityRepository.selectUserAuthority(memberDTO.getUserId());
 
-        if(!memberDTO.getPwd().equals(result.get().getPwd()) || memberDTO.getPwd() != "" || memberDTO.getPwd() != null){
+        if (!memberDTO.getPwd().equals(result.get().getPwd()) || memberDTO.getPwd() != "" || memberDTO.getPwd() != null) {
             memberAuthority.changePwd(member.getPwd());
         }
         memberAuthority.changeNote("");
@@ -255,13 +262,64 @@ public class MemberServiceImpl implements MemberService {
 
     }
 
+    //회원 탈퇴
+    @Override
+    public String removeMember(String userId) {
+        log.info("-------------------MemberServiceImpl-------------------");
+        log.info("============회원 탈퇴============");
+
+        //주문 삭제
+        Optional<OrderInfo> result = orderInfoRepository.selectOrderInfoMember(userId);
+
+        if (!result.isEmpty()) {
+            OrderInfo orderInfo = result.orElseThrow();
+
+            List<OrderDtl> orderDtlList = orderDtlRepository.selectOrderDtlDTOByRemoveUserId(orderInfo);
+
+            if (orderDtlList.size() != 0) {
+                for (int i = 0; i < orderDtlList.size(); i++) {
+                    if (!orderDtlList.get(i).getDeliStatus().equals("주문 완료") && !orderDtlList.get(i).getDeliStatus().equals("구매 완료")) {
+                        return "실패";
+                    }
+                }
+            }
+            //주문 삭제
+            orderInfo.setMember(null);
+            orderInfoRepository.save(orderInfo);
+
+        }
+
+
+        //좋아요 삭제
+        likeChkRepository.removePdLikeUserId(userId);
+
+        //카트 삭제
+        Optional<Cart> resultCart = cartRepository.selectCartMember(userId);
+
+        if (!resultCart.isEmpty()) {
+
+            Cart cart = resultCart.orElseThrow();
+
+            cartRepository.deleteById(cart.getCartNo());
+        }
+
+
+        //권한 삭제
+        memberAuthorityRepository.removeMemberAuthority(userId);
+
+        //회원 삭제
+        memberRepository.deleteById(userId);
+
+        return "완료";
+    }
+
     //회원 정보
     @Override
     public MemberDTO selectMemberInfo(String userId) {
         log.info("-------------------MemberServiceImpl-------------------");
         log.info("============회원 정보============");
         Member member = memberRepository.selectMemberId(userId);
-        if(member == null){
+        if (member == null) {
             member = new Member();
         }
         MemberDTO memberDTO = entityToDTO(member);
@@ -297,11 +355,11 @@ public class MemberServiceImpl implements MemberService {
         log.info("-------------------MemberServiceImpl-------------------");
         log.info("============아이디 찾기============");
 
-        Optional<Member> result = memberRepository.selectMemberFindUserID(name,email);
+        Optional<Member> result = memberRepository.selectMemberFindUserID(name, email);
 
         Member member = result.orElseThrow();
 
-        if(member != null){
+        if (member != null) {
             String userId = "";
             return userId;
         }

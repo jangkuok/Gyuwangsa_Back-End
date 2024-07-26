@@ -1,9 +1,12 @@
 package com.gywangsa.service.Impl;
 
 import com.gywangsa.domain.LikeChk;
+import com.gywangsa.domain.PdFile;
 import com.gywangsa.domain.PdInfo;
 import com.gywangsa.dto.LikeChkDTO;
+import com.gywangsa.dto.PdInfoDTO;
 import com.gywangsa.repository.LikeChkRepository;
+import com.gywangsa.repository.MemberRepository;
 import com.gywangsa.repository.PdInfoRepository;
 import com.gywangsa.service.LikeChkService;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +43,47 @@ public class LikeChkServiceImpl implements LikeChkService {
         }).collect(Collectors.toList());
 
         return dtoList;
+
+    }
+
+    @Override
+    public List<PdInfoDTO> selectUserIdLikePdInfo(String userId) {
+
+        List<LikeChk> likeChkList = likeChkRepository.selectUserIdLikeChk(userId);
+        List<PdInfoDTO> pdInfoDTOList = new ArrayList<>();
+
+        for(int i = 0; i < likeChkList.size(); i++){
+
+            Optional<PdInfo> result = pdInfoRepository.selectPdInfoByPdNo(likeChkList.get(i).getPdNo());
+            PdInfo pdInfo = result.orElseThrow();
+
+            PdInfoDTO pdInfoDTO = PdInfoDTO.builder()
+                    .categoryNo(pdInfo.getCategoryNo())
+                    .itemNo(pdInfo.getItemNo())
+                    .brandNo(pdInfo.getBrandNo())
+                    .brandNm(pdInfo.getBrandNm())
+                    .pdNo(pdInfo.getPdNo())
+                    .startDate(pdInfo.getStartDate())
+                    .pdName(pdInfo.getPdName())
+                    .endDate(pdInfo.getEndDate())
+                    .buyAmt(pdInfo.getBuyAmt())
+                    .likeCnt(pdInfo.getLikeCnt())
+                    .sexCd(pdInfo.getSexCd())
+                    .likeFlag(true)
+                    .note(pdInfo.getNote())
+                    .build();
+
+            //이미지
+            List<PdFile> imageList = pdInfo.getFileList();
+
+            List<String> fileList = imageList.stream().map(m -> m.getFileNm()).toList();
+            pdInfoDTO.setImageList(fileList);
+
+            pdInfoDTOList.add(pdInfoDTO);
+
+        }
+
+        return pdInfoDTOList;
     }
 
     //좋아요

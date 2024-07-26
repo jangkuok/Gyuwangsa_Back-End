@@ -63,6 +63,7 @@ public class MemberController {
         return memberDTO;
     }
 
+    //아이디 찾기
     @GetMapping("/find/{name}/{email}")
     public String selectMemberFindUserID(@PathVariable("name")  String name,
                                             @PathVariable("email")  String email){
@@ -75,6 +76,7 @@ public class MemberController {
         return userID;
     }
 
+    //비밀번호 수정
     @PutMapping("/modifyPassword")
     public Map<String, String> modifyMemberChangePassword(@RequestBody MemberDTO memberDTO){
         log.info("-------------------MemberController-------------------");
@@ -86,5 +88,19 @@ public class MemberController {
 
         return Map.of("result", "수정완료");
     }
+    
+    //회원 탈퇴
+    @GetMapping("/removeUser/{userId}")
+    public Map<String, String> removeMember(@PathVariable("userId")  String userId){
+        log.info("-------------------MemberController-------------------");
+        log.info("============회원 탈퇴============");
+
+        String result = memberService.removeMember(userId);
+
+        log.info(result);
+
+        return Map.of("result", result);
+    }
+
 
 }

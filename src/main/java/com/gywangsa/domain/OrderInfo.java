@@ -22,4 +22,8 @@ public class OrderInfo {
     @OneToOne
     @JoinColumn(name = "user_id")
     private  Member member;
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
 }

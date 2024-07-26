@@ -21,7 +21,7 @@ public class LikeChkRepositoryTest {
     private PdInfoRepository pdInfoRepository;
 
     @Test
-    public void insertLike(){
+    public void insertLike() {
         String userId = "test1";
         Long pdNo = 227L;
 
@@ -34,16 +34,16 @@ public class LikeChkRepositoryTest {
     }
 
     @Test
-    public void selectUserIdLikeChk(){
-        List<LikeChk> likeChkList =  likeChkRepository.selectUserIdLikeChk("test1");
+    public void selectUserIdLikeChk() {
+        List<LikeChk> likeChkList = likeChkRepository.selectUserIdLikeChk("test1");
 
         List<PdInfo> pdInfoList = pdInfoRepository.findAll();
 
         int cnt = 1;
 
-        for(int i = 0; i < likeChkList.size(); i++){
-            for(int j = 0; j < pdInfoList.size(); j++){
-                if(likeChkList.get(i).getPdNo().equals(pdInfoList.get(j).getPdNo())){
+        for (int i = 0; i < likeChkList.size(); i++) {
+            for (int j = 0; j < pdInfoList.size(); j++) {
+                if (likeChkList.get(i).getPdNo().equals(pdInfoList.get(j).getPdNo())) {
                     //log.info(cnt);
                     //cnt ++;
                     log.info("안녕");
@@ -51,5 +51,6 @@ public class LikeChkRepositoryTest {
             }
         }
     }
+
 
 }

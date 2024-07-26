@@ -20,4 +20,9 @@ public interface LikeChkRepository extends JpaRepository<LikeChk,Long> {
     @Query("delete from LikeChk l where l.userId = :userId and l.pdNo = :pdNo")
     void removePdLike(@Param("userId") String userId, @Param("pdNo") Long pdNo);
 
+    @Transactional
+    @Modifying
+    @Query("delete from LikeChk l where l.userId = :userId")
+    void removePdLikeUserId(@Param("userId") String userId);
+
 }

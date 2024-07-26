@@ -1,6 +1,7 @@
 package com.gywangsa.repository;
 
 import com.gywangsa.domain.OrderDtl;
+import com.gywangsa.domain.OrderInfo;
 import com.gywangsa.dto.OrderDtlDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -67,4 +68,9 @@ public interface OrderDtlRepository extends JpaRepository<OrderDtl,Long> {
             "and pi.fileOrd = 0" +
             "order by odd.ordDate desc ")
     Page<OrderDtlDTO> selectBrandOrderDeliStatus(Pageable pageable, @Param("brandNo") Long brandNo, @Param("deliStatus") String deliStatus);
+
+
+    //회원 삭제에 필요한 주문 리스트 조회
+    @Query("select odd from OrderDtl odd where odd.orderInfo = :orderInfo")
+    List<OrderDtl> selectOrderDtlDTOByRemoveUserId(@Param("orderInfo") OrderInfo orderInfo);
 }

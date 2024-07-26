@@ -1,9 +1,6 @@
 package com.gywangsa.domain;
 
-import jakarta.persistence.Access;
-import jakarta.persistence.AccessType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.*;
 
 
@@ -13,8 +10,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PdColor {
-    @Column(name = "coloer_no")
-    private Long colorNo;//컬러 색상
+    @Id
+    @Column(name = "color_no")
+    private Long colorNo;//컬러 번호
     @Column(name = "color_nm")
     private String colorNm;//컬러 이름
     @Column(name = "color_code")

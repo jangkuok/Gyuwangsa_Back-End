@@ -22,6 +22,8 @@ public interface MemberService {
     //비밀번호 초기화
     void modifyMemberChangePassword(String userId, String pwd);
 
+    String removeMember(String userId);
+
     //회원 정보 찾기
     MemberDTO selectMemberInfo(String userId);
 
