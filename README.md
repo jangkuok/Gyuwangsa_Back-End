@@ -7,6 +7,7 @@
 
 - 무신사와 크림을 참고하여 제작한 전자상거래 사이트.(Back-End)
 - 2018년도 단품 쇼핑몰 제작 이후 실력 점검 및 프로젝트 확장, 보편적인 언어 경험을 위해 제작.
+- Back-End 와 Front-End 분리.[Front-End](https://github.com/jangkuok/Gyuwangsa_Front-End.git)
 ----
 #### 개발 기간
 
@@ -22,9 +23,9 @@
 	<img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
   <img src="https://img.shields.io/badge/springsecurity-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
   <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
-  <img src="https://img.shields.io/badge/jpa-000000?style=for-the-badge">
+  <img src="https://img.shields.io/badge/jpa-0B2C4A?style=for-the-badge">
   <img src="https://img.shields.io/badge/postgresql-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
-  <img src="https://img.shields.io/badge/jsonwebtokens-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white">
+  <img src="https://img.shields.io/badge/jsonwebtokens-0B2C4A?style=for-the-badge&logo=jsonwebtokens&logoColor=white">
 </div>
 
 ----
@@ -41,6 +42,7 @@
 
 - 인프런 강의를 통해 JAVA/SPRING 복기
 - 개발자 지인을 통해 전체적인 프로젝트 조언, 언어 추천, 에러 관련 도움.
+- 막히는 에러와 알고리즘은 서치를 통해 해결.
 ----
 #### 추가 사항(보안점)
 
