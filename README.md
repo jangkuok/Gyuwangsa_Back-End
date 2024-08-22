@@ -27,7 +27,7 @@
 
 - 무신사와 크림을 참고하여 제작한 전자상거래 사이트.(Back-End)
 - 2018년도 단품 쇼핑몰 제작 이후 실력 점검 및 프로젝트 확장, 보편적인 언어 경험을 위해 제작.
-- Back-End 와 [Front-End](https://github.com/jangkuok/Gyuwangsa_Front-End.git) 분리.
+- Back-End 와 [Front-End](https://github.com/jangkuok/Gyuwangsa_Front-End.git) 분리. 
 ----
 ### **🗓 개발 기간**
 
