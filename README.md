@@ -48,6 +48,12 @@
 - 개발 툴은 Intellij 사용.(전 프로젝트에서는 Eclipse 사용.)
 ----
 
+### **✏ 테스트 방법**
+
+- SpringBootTest를 사용하여 Repository와 Service의 sql 테스트와 데이터 관련 테스트를 했으며 Log4j2를 사용하여 오류 유무, 결과값 확인.
+- PostMan 사용으로 Controller의 주소 확인 데이터 이동, JWT 테스트.
+----
+
 ### **🗂 패키지 구성**
 
 - domain
