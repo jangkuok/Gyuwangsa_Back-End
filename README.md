@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/postgresql-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
   <img src="https://img.shields.io/badge/apachetomcat-F8DC75?style=for-the-badge&logo=apachetomcat&logoColor=black"><br>
   <img src="https://img.shields.io/badge/jpa-181717?style=for-the-badge">
-  <img src="https://img.shields.io/badge/jpa-181717?style=for-the-badge">
+  <img src="https://img.shields.io/badge/jsonwebtokens-181717?style=for-the-badge&logo=jsonwebtokens&logoColor=white">
   <img src="https://img.shields.io/badge/intellijidea-181717?style=for-the-badge&logo=intellijidea&logoColor=white">
   <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
 </div>
@@ -47,9 +47,30 @@
 - 확장성과 보안성, 유지보수성을 높이기 위해 코드를 따로 나누어 관리 했으며 Restful API를 사용하여 서버와 클라이언트 통신.
 - 개발 툴은 Intellij 사용.(전 프로젝트에서는 Eclipse 사용.)
 ----
+
+### **🗂 패키지 구성**
+
+- domain
+- dto
+- repository
+- service
+   - lmpl
+- controller
+   - advice : 사용자 예외 처리 설정
+   - config : csrf 설정 / session 미사용 설정 / 로그인 성공/실패 설정 / JWT 체크 설정 / 사용자 비밀번호 암호화 설정 / CORS 설정
+   - formatter : LocalDateTimeFormatter 설정
+- security
+   - filter : JWT 체크 설정
+   - hander : 로그인 성공/실패 설정 / JWT 에러 설정
+   - user 권한 설정
+- paging : 페이징 처리 설정
+- util : 파일 업로드 설정 / JWT Exception 추가 / JWT 제작 설정
+
+----
+
 ### **❓ 참고 자료**
 
-- 인프런 강의를 통해 JAVA/SPRING 복기
+- 인터넷 자료 / 유튜브 / 인프런 강의를 통해 JAVA/SPRING 복기
 - 개발자 지인들을 통해 전체적인 프로젝트 조언, 언어 추천, 에러 관련 도움.
 - 막히는 에러와 알고리즘은 서치를 통해 해결.
 ----
