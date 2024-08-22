@@ -58,7 +58,7 @@
 - controller
    - advice : 사용자 예외 처리 설정
    - config : csrf 설정 / session 미사용 설정 / 로그인 성공/실패 설정 / JWT 체크 설정 / 사용자 비밀번호 암호화 설정 / CORS 설정
-   - formatter : LocalDateTimeFormatter 설정
+   - formatter : LocalDateTime 사용자 설정
 - security
    - filter : JWT 체크 설정
    - hander : 로그인 성공/실패 설정 / JWT 에러 설정
