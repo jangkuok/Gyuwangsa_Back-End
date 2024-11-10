@@ -45,13 +45,16 @@ public class MemberServiceImpl implements MemberService {
     private LocalDateTime now = LocalDateTime.now();
 
 
+    //카카오 accessToken
     private String getKakaoAccessToken(String accessToken) {
 
         log.info("-------------------MemberServiceImpl-------------------");
         log.info("============카카오 회원 accessToken============");
 
+        //url 호출
         String kakaoGetUserUrl = "https://kapi.kakao.com/v2/user/me";
 
+        //헤더 지정
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -84,6 +87,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
+    //카카오 회원 가입
     private Member makeKakaoMember(String userId) {
         log.info("-------------------MemberServiceImpl-------------------");
         log.info("============카카오 회원 가입============");

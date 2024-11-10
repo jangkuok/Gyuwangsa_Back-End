@@ -55,13 +55,15 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
         String authHeaderStr = request.getHeader("Authorization");
 
-        //Bearer //7 JWT 문자열
+
         try {
+            //Bearer 이후 글자 = accessToken
             String accessToken = authHeaderStr.substring(7);
             Map<String, Object> claims = JWTUtil.validateToken(accessToken);
 
             log.info("JWT claims: " + claims);
 
+            //로그인 사용자 정보
             String roleNm = String.valueOf(claims.get("roleNm"));
             String pwd = String.valueOf(claims.get("pwd"));
             String userId = String.valueOf(claims.get("userId"));

@@ -1,6 +1,7 @@
 package com.gywangsa.service;
 
 import com.gywangsa.domain.PdCategory;
+import com.gywangsa.domain.PdInfo;
 import com.gywangsa.domain.PdItem;
 import com.gywangsa.dto.PdCategoryDTO;
 
@@ -20,8 +21,9 @@ public interface PdCategoryService {
     //카테고리 조회
     List<PdCategoryDTO> selectCategory();
 
+    //카테고리 등록
+    void insertCategory(PdCategoryDTO pdCategory);
 
-    
 
     default PdCategoryDTO entityCategory(PdCategory category){
 

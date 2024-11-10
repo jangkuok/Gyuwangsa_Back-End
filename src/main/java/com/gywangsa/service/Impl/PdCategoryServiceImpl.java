@@ -45,4 +45,9 @@ public class PdCategoryServiceImpl implements PdCategoryService {
         return categoryDTOList;
     }
 
+    @Override
+    public void insertCategory(PdCategoryDTO pdCategory) {
+        categoryRepository.save(dtoCategory(pdCategory));
+    }
+
 }

@@ -14,6 +14,6 @@ public class PdItemDTO {
 
     private String itemNm;//아이템 이름
 
-    //private PdCategory pdCategory;
+    private PdCategory pdCategory;
 
 }

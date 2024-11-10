@@ -22,10 +22,10 @@ import lombok.*;
 public class PdItem {
     @Id
     @Column(name = "item_no")
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "gyu_pd_item_item_no_seq_gen"
-    )
+//    @GeneratedValue(
+//            strategy = GenerationType.SEQUENCE,
+//            generator = "gyu_pd_item_item_no_seq_gen"
+//    )
     private int itemNo;//아이템 번호
 
     @Column(name = "item_Nm")
